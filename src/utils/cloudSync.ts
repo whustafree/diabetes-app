@@ -1,22 +1,36 @@
 import { doc, getDoc, setDoc, enableNetwork } from 'firebase/firestore';
 import { getFirestoreDB } from '../firebase/config';
+import {
+  saveToCloudViaRest,
+  loadFromCloudViaRest,
+} from './cloudSyncRest';
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 1000;
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 800;
 
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
- * Intenta habilitar la red de Firestore y espera hasta 5s a que esté disponible.
- * Esto soluciona el error "Failed to get document because the client is offline".
+ * Detecta si un error de Firestore es por estar offline.
+ */
+function isOfflineError(err: any): boolean {
+  return (
+    err?.message?.includes?.('client is offline') ||
+    err?.message?.includes?.('offline') ||
+    err?.code === 'unavailable'
+  );
+}
+
+/**
+ * Intenta habilitar la red de Firestore.
  */
 async function ensureNetwork(db: ReturnType<typeof getFirestoreDB>): Promise<void> {
   try {
     await enableNetwork(db);
   } catch {
-    // enableNetwork puede fallar si ya está online; lo ignoramos
+    // Ignorar si ya está online
   }
 }
 
@@ -26,7 +40,12 @@ export interface CloudData<T> {
 }
 
 /**
- * Guarda datos genéricos en Firestore como un solo documento.
+ * Guarda datos en Firestore.
+ *
+ * Estrategia:
+ *   1. Intentar con el SDK de Firestore (con reintentos)
+ *   2. Si falla por "offline", hacer fallback a REST API (fetch estándar)
+ *
  * @param uid - ID del usuario
  * @param collectionName - Nombre de la subcolección (e.g., 'medications', 'reminders')
  * @param items - Array de items a guardar
@@ -36,6 +55,7 @@ export async function saveToCloud<T>(
   collectionName: string,
   items: T[]
 ): Promise<boolean> {
+  // ── Intento 1: SDK de Firestore ──
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const db = getFirestoreDB();
@@ -47,21 +67,32 @@ export async function saveToCloud<T>(
       } satisfies CloudData<T>);
       return true;
     } catch (err: any) {
-      const isOffline = err?.message?.includes?.('client is offline') || err?.message?.includes?.('offline');
-      if (isOffline && attempt < MAX_RETRIES) {
-        console.warn(`Intento ${attempt}/${MAX_RETRIES} — Firestore offline, reintentando en ${RETRY_DELAY_MS}ms...`);
+      if (isOfflineError(err) && attempt < MAX_RETRIES) {
+        console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
         await delay(RETRY_DELAY_MS);
         continue;
       }
-      console.error(`Error guardando ${collectionName} en la nube:`, err);
-      return false;
+      if (isOfflineError(err)) {
+        console.warn('[SDK] Firestore offline, usando REST API como fallback');
+      } else {
+        console.error(`[SDK] Error guardando ${collectionName}:`, err);
+        // Para errores que no son offline, intentar REST igual
+      }
     }
   }
-  return false;
+
+  // ── Fallback: REST API ──
+  console.info('[REST] Guardando usando REST API...');
+  return saveToCloudViaRest(uid, collectionName, items);
 }
 
 /**
- * Carga datos genéricos desde Firestore.
+ * Carga datos desde Firestore.
+ *
+ * Estrategia:
+ *   1. Intentar con el SDK de Firestore (con reintentos)
+ *   2. Si falla por "offline", hacer fallback a REST API
+ *
  * @param uid - ID del usuario
  * @param collectionName - Nombre de la subcolección
  * @returns Los datos o null si no existen
@@ -70,6 +101,7 @@ export async function loadFromCloud<T>(
   uid: string,
   collectionName: string
 ): Promise<CloudData<T> | null> {
+  // ── Intento 1: SDK de Firestore ──
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const db = getFirestoreDB();
@@ -79,17 +111,22 @@ export async function loadFromCloud<T>(
       if (!snapshot.exists()) return null;
       return snapshot.data() as CloudData<T>;
     } catch (err: any) {
-      const isOffline = err?.message?.includes?.('client is offline') || err?.message?.includes?.('offline');
-      if (isOffline && attempt < MAX_RETRIES) {
-        console.warn(`Intento ${attempt}/${MAX_RETRIES} — Firestore offline, reintentando en ${RETRY_DELAY_MS}ms...`);
+      if (isOfflineError(err) && attempt < MAX_RETRIES) {
+        console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
         await delay(RETRY_DELAY_MS);
         continue;
       }
-      // Si no es offline o ya no hay más reintentos, propagar el error
-      throw err;
+      if (isOfflineError(err)) {
+        console.warn('[SDK] Firestore offline, usando REST API como fallback');
+      } else {
+        console.error(`[SDK] Error cargando ${collectionName}:`, err);
+      }
     }
   }
-  return null;
+
+  // ── Fallback: REST API ──
+  console.info('[REST] Cargando usando REST API...');
+  return loadFromCloudViaRest<T>(uid, collectionName);
 }
 
 /**

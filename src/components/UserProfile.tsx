@@ -344,9 +344,9 @@ export default function UserProfileSection() {
           </div>
           <div className="flex items-center gap-2">
             {/* Cloud sync status */}
-            {cloudStatus === 'syncing' && <RefreshCw className="w-4 h-4 text-blue-500 animate-spin" title="Sincronizando..." />}
-            {cloudStatus === 'synced' && <Cloud className="w-4 h-4 text-green-500" title="Sincronizado con la nube" />}
-            {cloudStatus === 'offline' && <CloudOff className="w-4 h-4 text-gray-400" title="Solo datos locales" />}
+            {cloudStatus === 'syncing' && <span title="Sincronizando..."><RefreshCw className="w-4 h-4 text-blue-500 animate-spin" /></span>}
+            {cloudStatus === 'synced' && <span title="Sincronizado con la nube"><Cloud className="w-4 h-4 text-green-500" /></span>}
+            {cloudStatus === 'offline' && <span title="Solo datos locales"><CloudOff className="w-4 h-4 text-gray-400" /></span>}
             <button
               onClick={handleEdit}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"

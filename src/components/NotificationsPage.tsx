@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { BellRing, Search, Filter, Trash2, X, Bell, Clock, Activity, Smartphone, CalendarDays, TrendingUp } from 'lucide-react';
+import { BellRing, Search, Filter, Trash2, X, Bell, Clock, Activity, Smartphone, CalendarDays, TrendingUp, Eye, EyeOff } from 'lucide-react';
 
 const STORAGE_KEY = 'diabetes-app-notifications';
 

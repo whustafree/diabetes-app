@@ -64,7 +64,7 @@ function playAlarmSound() {
 function groupDueMedications(
   medications: Medication[],
   windowMinutes: number = 5
-): { timeKey: string; meds: Medication[]; time: Date }[] {
+): { meds: Medication[]; time: Date }[] {
   const groups = new Map<string, { meds: Medication[]; time: Date }>();
 
   for (const med of medications) {

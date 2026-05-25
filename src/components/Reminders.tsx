@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Bell, BellOff, Clock, PlusCircle, Trash2, Speaker, SpeakerOff, Save, CalendarDays, Activity, Cloud, CloudOff, RefreshCw, Smartphone, CheckCircle2 } from 'lucide-react';
+import { Bell, BellOff, Clock, PlusCircle, Trash2, Save, CalendarDays, Activity, Cloud, CloudOff, RefreshCw, Smartphone, CheckCircle2 } from 'lucide-react';
 import type { Reminder, ReminderType } from '../types';
 import { reminderTypeLabels, reminderTypeIcons } from '../types';
 import { generateId } from '../utils/helpers';
@@ -111,7 +111,7 @@ export default function Reminders() {
   const [pushError, setPushError] = useState('');
   const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
   const cloudInitDone = useRef(false);
-  const syncTimer = useRef<ReturnType<typeof setTimeout>>();
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // New reminder form state
   const [newType, setNewType] = useState<ReminderType>('glucose');

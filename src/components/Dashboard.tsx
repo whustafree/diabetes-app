@@ -28,7 +28,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');
   const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
   const cloudInitDone = useRef(false);
-  const syncTimer = useRef<ReturnType<typeof setTimeout>>();
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const stats = getDailyStats(entries.slice(0, 7));
   const lastValue = entries[0]?.value ?? 0;

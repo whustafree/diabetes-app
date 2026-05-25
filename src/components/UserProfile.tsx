@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut, DownloadCloud } from 'lucide-react';
+import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut, DownloadCloud, UploadCloud } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
 import type { UserProfile, HealthAssessment, Gender, ActivityLevel, DiabetesType } from '../types';
 import { genderLabels, activityLabels, diabetesTypeLabels } from '../types';
@@ -416,6 +416,27 @@ export default function UserProfileSection() {
     }
   };
 
+  // Función para subir perfil a la nube (reutilizable)
+  const syncProfileToCloud = useCallback(async () => {
+    if (!user || !firebaseReady || !profile) return false;
+    setCloudStatus('syncing');
+    setCloudError(null);
+    try {
+      const ok = await saveProfileToCloud(user.uid, profile);
+      if (!ok) {
+        setCloudStatus('offline');
+        setCloudError('No se pudo guardar el perfil en la nube. Revisa las reglas de Firestore o tu conexión.');
+        return false;
+      }
+      setCloudStatus('synced');
+      return true;
+    } catch (err: any) {
+      setCloudStatus('offline');
+      setCloudError(`Error al subir: ${err?.message || 'No se pudo conectar con Firebase.'}`);
+      return false;
+    }
+  }, [user, firebaseReady, profile]);
+
   // ─── VISTA DEL PERFIL ───
 
   if (!profile || !assessment) return null;
@@ -486,6 +507,49 @@ export default function UserProfileSection() {
             )}
           </div>
         </div>
+
+        {/* Cloud sync error banner - also visible in profile view */}
+        {cloudError && (
+          <div className="mt-4 p-4 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-yellow-800 dark:text-yellow-300">Problema de sincronización con la nube</p>
+              <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-1">{cloudError}</p>
+              <button
+                onClick={syncProfileToCloud}
+                disabled={cloudStatus === 'syncing'}
+                className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-yellow-600 text-white hover:bg-yellow-700 disabled:opacity-50 transition-all"
+              >
+                {cloudStatus === 'syncing' ? (
+                  <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Subiendo...</>
+                ) : (
+                  <><UploadCloud className="w-3.5 h-3.5" /> Reintentar subir a la nube</>
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Manual upload button when not synced */}
+        {user && firebaseReady && cloudStatus !== 'synced' && !cloudError && (
+          <div className="mt-4 p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <CloudOff className="w-4 h-4 text-blue-600" />
+              <p className="text-xs font-medium text-blue-700 dark:text-blue-300">Perfil solo guardado localmente</p>
+            </div>
+            <button
+              onClick={syncProfileToCloud}
+              disabled={cloudStatus === 'syncing'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-all"
+            >
+              {cloudStatus === 'syncing' ? (
+                <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Subiendo...</>
+              ) : (
+                <><UploadCloud className="w-3.5 h-3.5" /> Subir a la nube</>
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Health Metrics Grid */}

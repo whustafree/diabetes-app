@@ -26,7 +26,7 @@ export async function saveToCloud<T>(
     } satisfies CloudData<T>);
     return true;
   } catch (err) {
-    console.warn(`Error guardando ${collectionName} en la nube:`, err);
+    console.error(`Error guardando ${collectionName} en la nube:`, err);
     return false;
   }
 }
@@ -41,16 +41,11 @@ export async function loadFromCloud<T>(
   uid: string,
   collectionName: string
 ): Promise<CloudData<T> | null> {
-  try {
-    const db = getFirestoreDB();
-    const ref = doc(db, 'users', uid, collectionName, 'all');
-    const snapshot = await getDoc(ref);
-    if (!snapshot.exists()) return null;
-    return snapshot.data() as CloudData<T>;
-  } catch (err) {
-    console.warn(`Error cargando ${collectionName} desde la nube:`, err);
-    return null;
-  }
+  const db = getFirestoreDB();
+  const ref = doc(db, 'users', uid, collectionName, 'all');
+  const snapshot = await getDoc(ref);
+  if (!snapshot.exists()) return null;
+  return snapshot.data() as CloudData<T>;
 }
 
 /**

@@ -27,6 +27,11 @@ export default function UserProfileSection() {
   );
   const [saved, setSaved] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
+  // Si el usuario está autenticado pero no hay perfil local, esperar sync cloud
+  // initialSyncDone = true cuando ya sabemos que no hay perfil en la nube o ya se cargó
+  const [initialSyncDone, setInitialSyncDone] = useState(
+    !(user && firebaseReady) || !!profile
+  );
   const cloudInitDone = useRef(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
@@ -56,28 +61,30 @@ export default function UserProfileSection() {
     if (!user || !firebaseReady) {
       cloudInitDone.current = true;
       setCloudStatus('offline');
+      setInitialSyncDone(true);
       return;
     }
     setCloudStatus('syncing');
     loadProfileFromCloud(user.uid).then(cloudProfile => {
       cloudInitDone.current = true;
       if (cloudProfile) {
-        // Usar el perfil de la nube (es un solo objeto, no hay merge necesario)
         setProfile(cloudProfile);
         setForm(cloudProfile);
+        setEditing(false);
         saveProfile(cloudProfile);
         setCloudStatus('synced');
       } else if (profile) {
-        // No hay perfil en la nube, subir el local
         saveProfileToCloud(user.uid, profile).then(ok => {
           setCloudStatus(ok ? 'synced' : 'offline');
         });
       } else {
         setCloudStatus('synced');
       }
+      setInitialSyncDone(true);
     }).catch(() => {
       cloudInitDone.current = true;
       setCloudStatus('offline');
+      setInitialSyncDone(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, firebaseReady]);
@@ -100,6 +107,22 @@ export default function UserProfileSection() {
     setForm(profile!);
     setEditing(true);
   };
+
+  // ─── LOADING (mientras se sincroniza desde la nube) ───
+
+  if (!initialSyncDone) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex flex-col items-center justify-center py-16">
+            <RefreshCw className="w-10 h-10 text-blue-500 animate-spin mb-4" />
+            <p className="text-base font-semibold text-gray-500 dark:text-gray-400">Cargando tu perfil...</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Sincronizando desde la nube</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ─── FORMULARIO ───
 

@@ -1,18 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Activity, User, Salad, Scale, Bell, Pill, Moon, Sun, Cloud, CloudOff, RefreshCw, LogOut, X, Loader2, BellRing, BellPlus, ChevronDown, Settings, Utensils } from 'lucide-react';
 import { useTheme } from './contexts/ThemeContext';
 import { useAuth } from './contexts/AuthContext';
 import { saveThemeToCloud, loadThemeFromCloud } from './utils/themeSync';
+import { saveProfile } from './utils/health';
+import { loadProfileFromCloud } from './utils/profileSync';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
-import UserProfileSection from './components/UserProfile';
-import MealPlanner from './components/MealPlanner';
-import DietPlan from './components/DietPlan';
-import Reminders from './components/Reminders';
-import Medications from './components/Medications';
-import SettingsPage from './components/SettingsPage';
-import FoodLog from './components/FoodLog';
 import ConfirmModal from './components/ConfirmModal';
+
+// Carga diferida (lazy) de componentes grandes para optimizar el bundle inicial
+const UserProfileSection = lazy(() => import('./components/UserProfile'));
+const MealPlanner = lazy(() => import('./components/MealPlanner'));
+const DietPlan = lazy(() => import('./components/DietPlan'));
+const Reminders = lazy(() => import('./components/Reminders'));
+const Medications = lazy(() => import('./components/Medications'));
+const SettingsPage = lazy(() => import('./components/SettingsPage'));
+const FoodLog = lazy(() => import('./components/FoodLog'));
 import NotificationsPage, { persistNotification, getUnreadCount, markAllNotificationsRead } from './components/NotificationsPage';
 import { initPushNotifications, onForegroundMessage } from './utils/notifications';
 import { initNotificationScheduler } from './utils/notificationScheduler';
@@ -37,6 +41,8 @@ export default function App() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [profileSyncKey, setProfileSyncKey] = useState(0);
+  const [profileSyncStatus, setProfileSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { theme, isDark, cycleTheme, setTheme, themeMeta } = useTheme();
   const { user, loading, firebaseReady, logout } = useAuth();
@@ -53,6 +59,26 @@ export default function App() {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, firebaseReady]);
+
+  // ─── SYNC PERFIL CON FIRESTORE ───
+  useEffect(() => {
+    if (!user || !firebaseReady) return;
+
+    setProfileSyncStatus('syncing');
+    loadProfileFromCloud(user.uid).then(cloudProfile => {
+      if (cloudProfile) {
+        saveProfile(cloudProfile);
+        setProfileSyncKey(prev => prev + 1);
+        setProfileSyncStatus('synced');
+      } else {
+        setProfileSyncStatus('idle');
+      }
+    }).catch(() => {
+      setProfileSyncStatus('offline');
+      // Reintentar después de 5 segundos
+      setTimeout(() => setProfileSyncStatus('idle'), 5000);
+    });
   }, [user, firebaseReady]);
 
   // Guardar tema en Firestore cuando cambie
@@ -218,6 +244,19 @@ export default function App() {
                 <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 transition-all duration-300" title="Cambios pendientes de sincronizar">
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>{pendingCount} pendiente{pendingCount !== 1 ? 's' : ''}</span>
+                </div>
+              )}
+              {/* Profile sync status */}
+              {user && firebaseReady && profileSyncStatus === 'syncing' && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <span className="hidden md:inline">Sincronizando perfil...</span>
+                </div>
+              )}
+              {user && firebaseReady && profileSyncStatus === 'offline' && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400">
+                  <CloudOff className="w-3.5 h-3.5" />
+                  <span className="hidden md:inline">Error de sync</span>
                 </div>
               )}
               {/* Global sync status */}
@@ -415,15 +454,24 @@ export default function App() {
       {/* Main Content */}
       <main className="py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {section === 'dashboard' && <Dashboard onNavigate={setSection} />}
-          {section === 'profile' && <UserProfileSection />}
-          {section === 'meals' && <MealPlanner />}
-          {section === 'diet' && <DietPlan />}
-          {section === 'medications' && <Medications />}
-          {section === 'reminders' && <Reminders />}
-          {section === 'notifications' && <NotificationsPage />}
-          {section === 'settings' && <SettingsPage />}
-          {section === 'foodlog' && <FoodLog />}
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mx-auto mb-3" />
+                <p className="text-sm text-gray-400 dark:text-gray-500">Cargando sección...</p>
+              </div>
+            </div>
+          }>
+            {section === 'dashboard' && <Dashboard key={profileSyncKey} onNavigate={setSection} />}
+            {section === 'profile' && <UserProfileSection />}
+            {section === 'meals' && <MealPlanner />}
+            {section === 'diet' && <DietPlan />}
+            {section === 'medications' && <Medications />}
+            {section === 'reminders' && <Reminders />}
+            {section === 'notifications' && <NotificationsPage />}
+            {section === 'settings' && <SettingsPage />}
+            {section === 'foodlog' && <FoodLog />}
+          </Suspense>
         </div>
       </main>
 

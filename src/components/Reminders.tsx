@@ -4,7 +4,7 @@ import type { Reminder, ReminderType } from '../types';
 import { reminderTypeLabels, reminderTypeIcons } from '../types';
 import { generateId } from '../utils/helpers';
 import { useAuth } from '../contexts/AuthContext';
-import { saveRemindersToCloud, loadRemindersFromCloud, mergeReminders } from '../utils/reminderSync';
+import { saveRemindersToCloud, loadRemindersFromCloud } from '../utils/reminderSync';
 import { requestNotificationPermission, saveTokenToFirestore } from '../utils/notifications';
 import { addScheduledNotification, removeScheduledNotification } from '../utils/notificationScheduler';
 
@@ -154,15 +154,15 @@ export default function Reminders() {
     }
     setCloudStatus('syncing');
     loadRemindersFromCloud(user.uid).then(cloudData => {
-      const { reminders: merged, fromCloud } = mergeReminders(reminders, cloudData);
-      setReminders(merged);
-      localStorage.setItem('diabetes-app-reminders', JSON.stringify(merged));
       cloudInitDone.current = true;
-      if (fromCloud) {
+      if (cloudData && cloudData.items.length > 0) {
+        // Usar datos de la nube directamente (evita que defaults locales sobrescriban)
+        setReminders(cloudData.items);
+        localStorage.setItem('diabetes-app-reminders', JSON.stringify(cloudData.items));
         setCloudStatus('synced');
-      } else if (merged.length > 0) {
-        // Los datos locales son más recientes, súbelos a la nube
-        saveRemindersToCloud(user.uid, merged).then(ok => {
+      } else if (reminders && reminders.length > 0) {
+        // No hay datos en la nube, subir los locales
+        saveRemindersToCloud(user.uid, reminders).then(ok => {
           setCloudStatus(ok ? 'synced' : 'offline');
         });
       } else {

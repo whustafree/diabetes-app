@@ -1,5 +1,24 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, enableNetwork } from 'firebase/firestore';
 import { getFirestoreDB } from '../firebase/config';
+
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 1000;
+
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Intenta habilitar la red de Firestore y espera hasta 5s a que esté disponible.
+ * Esto soluciona el error "Failed to get document because the client is offline".
+ */
+async function ensureNetwork(db: ReturnType<typeof getFirestoreDB>): Promise<void> {
+  try {
+    await enableNetwork(db);
+  } catch {
+    // enableNetwork puede fallar si ya está online; lo ignoramos
+  }
+}
 
 export interface CloudData<T> {
   items: T[];
@@ -17,18 +36,28 @@ export async function saveToCloud<T>(
   collectionName: string,
   items: T[]
 ): Promise<boolean> {
-  try {
-    const db = getFirestoreDB();
-    const ref = doc(db, 'users', uid, collectionName, 'all');
-    await setDoc(ref, {
-      items: JSON.parse(JSON.stringify(items)),
-      updatedAt: new Date().toISOString(),
-    } satisfies CloudData<T>);
-    return true;
-  } catch (err) {
-    console.error(`Error guardando ${collectionName} en la nube:`, err);
-    return false;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const db = getFirestoreDB();
+      await ensureNetwork(db);
+      const ref = doc(db, 'users', uid, collectionName, 'all');
+      await setDoc(ref, {
+        items: JSON.parse(JSON.stringify(items)),
+        updatedAt: new Date().toISOString(),
+      } satisfies CloudData<T>);
+      return true;
+    } catch (err: any) {
+      const isOffline = err?.message?.includes?.('client is offline') || err?.message?.includes?.('offline');
+      if (isOffline && attempt < MAX_RETRIES) {
+        console.warn(`Intento ${attempt}/${MAX_RETRIES} — Firestore offline, reintentando en ${RETRY_DELAY_MS}ms...`);
+        await delay(RETRY_DELAY_MS);
+        continue;
+      }
+      console.error(`Error guardando ${collectionName} en la nube:`, err);
+      return false;
+    }
   }
+  return false;
 }
 
 /**
@@ -41,11 +70,26 @@ export async function loadFromCloud<T>(
   uid: string,
   collectionName: string
 ): Promise<CloudData<T> | null> {
-  const db = getFirestoreDB();
-  const ref = doc(db, 'users', uid, collectionName, 'all');
-  const snapshot = await getDoc(ref);
-  if (!snapshot.exists()) return null;
-  return snapshot.data() as CloudData<T>;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const db = getFirestoreDB();
+      await ensureNetwork(db);
+      const ref = doc(db, 'users', uid, collectionName, 'all');
+      const snapshot = await getDoc(ref);
+      if (!snapshot.exists()) return null;
+      return snapshot.data() as CloudData<T>;
+    } catch (err: any) {
+      const isOffline = err?.message?.includes?.('client is offline') || err?.message?.includes?.('offline');
+      if (isOffline && attempt < MAX_RETRIES) {
+        console.warn(`Intento ${attempt}/${MAX_RETRIES} — Firestore offline, reintentando en ${RETRY_DELAY_MS}ms...`);
+        await delay(RETRY_DELAY_MS);
+        continue;
+      }
+      // Si no es offline o ya no hay más reintentos, propagar el error
+      throw err;
+    }
+  }
+  return null;
 }
 
 /**

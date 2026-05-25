@@ -1,6 +1,6 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, type Firestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { initializeFirestore, type Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -31,7 +31,12 @@ export function getFirebaseAuth(): Auth {
 
 export function getFirestoreDB(): Firestore {
   if (!db) {
-    db = getFirestore(getFirebaseApp());
+    // Usamos HTTP long polling en lugar de WebSockets para evitar
+    // el error "Failed to get document because the client is offline"
+    // que ocurre cuando firewalls o proxies bloquean WebSockets.
+    db = initializeFirestore(getFirebaseApp(), {
+      experimentalForceLongPolling: true,
+    });
   }
   return db;
 }

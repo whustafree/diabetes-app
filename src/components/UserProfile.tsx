@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut } from 'lucide-react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut, DownloadCloud } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
 import type { UserProfile, HealthAssessment, Gender, ActivityLevel, DiabetesType } from '../types';
 import { genderLabels, activityLabels, diabetesTypeLabels } from '../types';
@@ -27,6 +27,8 @@ export default function UserProfileSection() {
   );
   const [saved, setSaved] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
+  const [cloudError, setCloudError] = useState<string | null>(null);
+  const [cloudSyncing, setCloudSyncing] = useState(false);
   // Si el usuario está autenticado pero no hay perfil local, esperar sync cloud
   // initialSyncDone = true cuando ya sabemos que no hay perfil en la nube o ya se cargó
   const [initialSyncDone, setInitialSyncDone] = useState(
@@ -56,6 +58,37 @@ export default function UserProfileSection() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Función para sincronizar perfil desde la nube (reutilizable)
+  const syncProfileFromCloud = useCallback(async () => {
+    if (!user || !firebaseReady) return false;
+    setCloudSyncing(true);
+    setCloudError(null);
+    try {
+      const cloudProfile = await loadProfileFromCloud(user.uid);
+      if (cloudProfile) {
+        setProfile(cloudProfile);
+        setForm(cloudProfile);
+        setEditing(false);
+        saveProfile(cloudProfile);
+        setCloudStatus('synced');
+        setCloudError(null);
+        return true;
+      } else {
+        setCloudStatus('idle');
+        setCloudError('No se encontró un perfil en la nube con este usuario. ¿Creaste tu perfil desde otro dispositivo?' +
+          ' Asegúrate de haber guardado el perfil (botón "Crear Perfil") en el otro dispositivo para que se suba a la nube.');
+        return false;
+      }
+    } catch (err: any) {
+      setCloudStatus('offline');
+      setCloudError(`Error de conexión: ${err?.message || 'No se pudo conectar con Firebase. Verifica tu conexión a internet.'}`);
+      return false;
+    } finally {
+      setCloudSyncing(false);
+      setInitialSyncDone(true);
+    }
+  }, [user, firebaseReady]);
+
   // Cloud sync: carga inicial desde Firebase
   useEffect(() => {
     if (!user || !firebaseReady) {
@@ -76,20 +109,23 @@ export default function UserProfileSection() {
       } else if (profile) {
         saveProfileToCloud(user.uid, profile).then(ok => {
           setCloudStatus(ok ? 'synced' : 'offline');
+          if (!ok) setCloudError('No se pudo guardar tu perfil en la nube. Revisa las reglas de Firestore o tu conexión.');
         });
       } else {
-        setCloudStatus('synced');
+        setCloudStatus('idle');
       }
       setInitialSyncDone(true);
-    }).catch(() => {
+    }).catch((err: any) => {
       cloudInitDone.current = true;
       setCloudStatus('offline');
+      setCloudError(`Error al sincronizar: ${err?.message || 'No se pudo conectar con Firebase.'}`);
       setInitialSyncDone(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, firebaseReady]);
 
   const handleSave = () => {
+    setCloudError(null);
     saveProfile(form);
     setProfile(form);
     setEditing(false);
@@ -98,12 +134,14 @@ export default function UserProfileSection() {
     if (user && firebaseReady) {
       saveProfileToCloud(user.uid, form).then(ok => {
         setCloudStatus(ok ? 'synced' : 'offline');
+        if (!ok) setCloudError('No se pudo guardar el perfil en la nube. Los datos se guardaron localmente.');
       });
     }
     setTimeout(() => setSaved(false), 2000);
   };
 
   const handleEdit = () => {
+    setCloudError(null);
     setForm(profile!);
     setEditing(true);
   };
@@ -141,6 +179,42 @@ export default function UserProfileSection() {
               <p className="text-sm text-gray-400 dark:text-gray-500">Completa tus datos para obtener evaluación de salud</p>
             </div>
           </div>
+
+          {/* Cloud sync error banner */}
+          {cloudError && (
+            <div className="p-4 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-start gap-3 mb-2">
+              <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-yellow-800 dark:text-yellow-300">Problema de sincronización</p>
+                <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-1">{cloudError}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Sync from cloud button - only show when creating profile (no local profile) */}
+          {user && firebaseReady && !profile && (
+            <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 flex items-start gap-3 mb-2">
+              <DownloadCloud className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-blue-800 dark:text-blue-300">¿Ya tienes un perfil en otro dispositivo?</p>
+                <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                  Si ya creaste tu perfil desde otro dispositivo (computadora, otro celular),
+                  puedes sincronizarlo desde la nube en lugar de crear uno nuevo.
+                </p>
+                <button
+                  onClick={syncProfileFromCloud}
+                  disabled={cloudSyncing}
+                  className="mt-3 flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  {cloudSyncing ? (
+                    <><RefreshCw className="w-4 h-4 animate-spin" /> Sincronizando...</>
+                  ) : (
+                    <><DownloadCloud className="w-4 h-4" /> Sincronizar desde la nube</>
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="space-y-5">
             {/* Name */}

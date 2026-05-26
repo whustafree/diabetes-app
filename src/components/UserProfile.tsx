@@ -157,6 +157,50 @@ export default function UserProfileSection() {
     setEditing(true);
   };
 
+  const handleDeleteAccount = async () => {
+    if (!deletePassword) {
+      setDeleteError('Ingresa tu contraseña para confirmar');
+      return;
+    }
+    setDeleteError('');
+    setDeleting(true);
+    try {
+      await deleteAccount(deletePassword);
+      // La redirección ocurre automáticamente cuando el usuario es eliminado
+      // El estado de auth cambia y la UI se actualiza sola
+    } catch (err: any) {
+      const msg = err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential'
+        ? 'Contraseña incorrecta'
+        : err.code === 'auth/requires-recent-login'
+        ? 'Por seguridad, cierra sesión y vuelve a iniciarla antes de eliminar tu cuenta'
+        : err.message || 'Error al eliminar la cuenta';
+      setDeleteError(msg);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  // Función para subir perfil a la nube (reutilizable)
+  const syncProfileToCloud = useCallback(async () => {
+    if (!user || !firebaseReady || !profile) return false;
+    setCloudStatus('syncing');
+    setCloudError(null);
+    try {
+      const ok = await saveProfileToCloud(user.uid, profile);
+      if (!ok) {
+        setCloudStatus('offline');
+        setCloudError('No se pudo guardar el perfil en la nube. Revisa las reglas de Firestore o tu conexión.');
+        return false;
+      }
+      setCloudStatus('synced');
+      return true;
+    } catch (err: any) {
+      setCloudStatus('offline');
+      setCloudError(`Error al subir: ${err?.message || 'No se pudo conectar con Firebase.'}`);
+      return false;
+    }
+  }, [user?.uid, firebaseReady, profile]);
+
   // ─── LOADING (mientras se sincroniza desde la nube) ───
 
   if (!initialSyncDone) {
@@ -403,50 +447,6 @@ export default function UserProfileSection() {
       </div>
     );
   }
-
-  const handleDeleteAccount = async () => {
-    if (!deletePassword) {
-      setDeleteError('Ingresa tu contraseña para confirmar');
-      return;
-    }
-    setDeleteError('');
-    setDeleting(true);
-    try {
-      await deleteAccount(deletePassword);
-      // La redirección ocurre automáticamente cuando el usuario es eliminado
-      // El estado de auth cambia y la UI se actualiza sola
-    } catch (err: any) {
-      const msg = err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential'
-        ? 'Contraseña incorrecta'
-        : err.code === 'auth/requires-recent-login'
-        ? 'Por seguridad, cierra sesión y vuelve a iniciarla antes de eliminar tu cuenta'
-        : err.message || 'Error al eliminar la cuenta';
-      setDeleteError(msg);
-    } finally {
-      setDeleting(false);
-    }
-  };
-
-  // Función para subir perfil a la nube (reutilizable)
-  const syncProfileToCloud = useCallback(async () => {
-    if (!user || !firebaseReady || !profile) return false;
-    setCloudStatus('syncing');
-    setCloudError(null);
-    try {
-      const ok = await saveProfileToCloud(user.uid, profile);
-      if (!ok) {
-        setCloudStatus('offline');
-        setCloudError('No se pudo guardar el perfil en la nube. Revisa las reglas de Firestore o tu conexión.');
-        return false;
-      }
-      setCloudStatus('synced');
-      return true;
-    } catch (err: any) {
-      setCloudStatus('offline');
-      setCloudError(`Error al subir: ${err?.message || 'No se pudo conectar con Firebase.'}`);
-      return false;
-    }
-  }, [user?.uid, firebaseReady, profile]);
 
   // ─── VISTA DEL PERFIL ───
 

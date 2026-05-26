@@ -23,22 +23,16 @@ const FIRESTORE_API_BASE = 'https://firestore.googleapis.com/v1';
 
 /**
  * Obtiene el projectId desde la app de Firebase ya inicializada.
- * Se obtiene del auth actual (que ya está inicializado cuando se llama a estas funciones).
+ * Retorna null si no está configurado correctamente, en lugar de lanzar error,
+ * para que la app pueda funcionar en modo demo sin Firebase configurado.
  */
-function getProjectId(): string {
-  // Leer de las variables de entorno como fallback
+function getProjectId(): string | null {
+  // Leer de las variables de entorno
   const fromEnv = import.meta.env.VITE_FIREBASE_PROJECT_ID;
   if (fromEnv && fromEnv !== 'tu-proyecto') return fromEnv;
 
-  // Intentar obtenerlo del auth currentUser (el proyecto está en el token)
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (user) {
-    // Extraer projectId del tenantId o del providerId — no es confiable
-    // Mejor usar variable de entorno
-  }
-
-  throw new Error('No se puede determinar el projectId de Firebase. Verifica VITE_FIREBASE_PROJECT_ID.');
+  // No hay projectId configurado — esto es normal en modo demo
+  return null;
 }
 
 /**
@@ -255,6 +249,6 @@ export async function loadFromCloudViaRest<T>(
     return obj;
   } catch (err) {
     console.error(`[REST] Error cargando ${collectionName} desde la nube:`, err);
-    throw err; // Propagar para que el llamador lo maneje
+    return null; // No propagar el error, retornar null para que el llamador continúe normalmente
   }
 }

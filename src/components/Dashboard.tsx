@@ -538,7 +538,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  </h3>
  <button
  onClick={() => onNavigate?.('profile')}
- className="text-[10px] font-semibold text-blue-400 hover:text-blue-600 transition-colors"
+ className="text-[10px] font-semibold text-blue-400 hover:text-blue-400 transition-colors"
  >
  Ver perfil completo
  </button>

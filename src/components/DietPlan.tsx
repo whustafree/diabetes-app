@@ -138,10 +138,10 @@ export default function DietPlan() {
  <h4 className="text-sm font-bold text-gray-400 mb-3">Distribución de Macronutrientes</h4>
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
  {[
- { icon: Beef, label: 'Proteína', value: `${recommendation.proteinG}g`, color: 'text-blue-600', bg: 'bg-blue-50', pct: '30%' },
- { icon: Wheat, label: 'Carbohidratos', value: `${recommendation.carbsG}g`, color: 'text-orange-600', bg: 'bg-orange-50', pct: '35%' },
- { icon: Droplets, label: 'Grasas', value: `${recommendation.fatG}g`, color: 'text-purple-600', bg: 'bg-purple-50', pct: '35%' },
- { icon: Salad, label: 'Fibra', value: `${recommendation.fiberG}g`, color: 'text-green-600', bg: 'bg-green-50', pct: 'min' },
+ { icon: Beef, label: 'Proteína', value: `${recommendation.proteinG}g`, color: 'text-blue-400', bg: 'bg-blue-900/30', pct: '30%' },
+ { icon: Wheat, label: 'Carbohidratos', value: `${recommendation.carbsG}g`, color: 'text-orange-400', bg: 'bg-orange-900/30', pct: '35%' },
+ { icon: Droplets, label: 'Grasas', value: `${recommendation.fatG}g`, color: 'text-purple-400', bg: 'bg-purple-900/30', pct: '35%' },
+ { icon: Salad, label: 'Fibra', value: `${recommendation.fiberG}g`, color: 'text-green-400', bg: 'bg-green-900/30', pct: 'min' },
  ].map(m => {
  const Icon = m.icon;
  return (

@@ -17,7 +17,7 @@ type SettingsTab = 'account' | 'security' | 'activity';
 const activityMeta: Record<string, { icon: string; color: string; label: string }> = {
  login: { icon: '🔓', color: 'text-green-600', label: 'Inicio de sesión' },
  logout: { icon: '🔒', color: 'text-yellow-600', label: 'Cierre de sesión' },
- password_change: { icon: '🔑', color: 'text-blue-600', label: 'Cambio de contraseña' },
+ password_change: { icon: '🔑', color: 'text-blue-400', label: 'Cambio de contraseña' },
  profile_update: { icon: '👤', color: 'text-purple-600', label: 'Actualización de perfil' },
  register: { icon: '✨', color: 'text-emerald-600', label: 'Registro' },
  settings_change: { icon: '⚙️', color: 'text-gray-600', label: 'Cambio de configuración' },

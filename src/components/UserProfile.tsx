@@ -241,7 +241,7 @@ export default function UserProfileSection() {
  <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"/>
  <div className="flex-1 min-w-0">
  <p className="text-sm font-semibold text-yellow-800 text-yellow-300">Problema de sincronización</p>
- <p className="text-xs text-yellow-700 text-yellow-400 mt-1">{cloudError}</p>
+ <p className="text-xs text-yellow-300 text-yellow-400 mt-1">{cloudError}</p>
  </div>
  </div>
  )}
@@ -251,8 +251,8 @@ export default function UserProfileSection() {
  <div className="p-4 rounded-xl bg-blue-900/20 border border-blue-700 border-blue-800 flex items-start gap-3 mb-2">
  <DownloadCloud className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"/>
  <div className="flex-1 min-w-0">
- <p className="text-sm font-semibold text-blue-800 text-blue-300">¿Ya tienes un perfil en otro dispositivo?</p>
- <p className="text-xs text-blue-700 text-blue-400 mt-1">
+ <p className="text-sm font-semibold text-blue-200 text-blue-300">¿Ya tienes un perfil en otro dispositivo?</p>
+ <p className="text-xs text-blue-300 text-blue-400 mt-1">
  Si ya creaste tu perfil desde otro dispositivo (computadora, otro celular),
  puedes sincronizarlo desde la nube en lugar de crear uno nuevo.
  </p>
@@ -478,7 +478,7 @@ export default function UserProfileSection() {
  {cloudStatus === 'offline' && <span title="Solo datos locales"><CloudOff className="w-4 h-4 text-gray-400"/></span>}
  <button
  onClick={handleEdit}
- className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-blue-600 hover:text-blue-400 hover:bg-blue-50 hover:bg-blue-900/20 transition-all"
+ className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-blue-400 hover:text-blue-400 hover:bg-blue-50 hover:bg-blue-900/20 transition-all"
  >
  <Edit3 className="w-4 h-4"/>
  Editar
@@ -525,7 +525,7 @@ export default function UserProfileSection() {
  <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"/>
  <div className="flex-1 min-w-0">
  <p className="text-sm font-semibold text-yellow-800 text-yellow-300">Problema de sincronización con la nube</p>
- <p className="text-xs text-yellow-700 text-yellow-400 mt-1">{cloudError}</p>
+ <p className="text-xs text-yellow-300 text-yellow-400 mt-1">{cloudError}</p>
  <button
  onClick={syncProfileToCloud}
  disabled={cloudStatus === 'syncing'}
@@ -545,7 +545,7 @@ export default function UserProfileSection() {
  {user && firebaseReady && cloudStatus !== 'synced' && !cloudError && (
  <div className="mt-4 p-3 rounded-xl bg-blue-900/20 border border-blue-700 border-blue-800 flex items-center justify-between">
  <div className="flex items-center gap-2">
- <CloudOff className="w-4 h-4 text-blue-600"/>
+ <CloudOff className="w-4 h-4 text-blue-400"/>
  <p className="text-xs font-medium text-blue-300">Perfil solo guardado localmente</p>
  </div>
  <button
@@ -654,7 +654,7 @@ export default function UserProfileSection() {
  </div>
  <p className="text-sm text-gray-300 mb-2">{risk.description}</p>
  <p className="text-sm font-medium text-gray-300">
- <span className="text-blue-600">💡 Recomendación:</span> {risk.recommendation}
+ <span className="text-blue-400">💡 Recomendación:</span> {risk.recommendation}
  </p>
  </div>
  ))}
@@ -669,7 +669,7 @@ export default function UserProfileSection() {
  </h3>
  <div className="grid sm:grid-cols-2 gap-4">
  <div className="p-4 rounded-xl bg-blue-900/20 border border-blue-100">
- <div className="text-sm font-semibold text-blue-700 mb-1">Peso ideal</div>
+ <div className="text-sm font-semibold text-blue-300 mb-1">Peso ideal</div>
  <div className="text-lg font-bold text-blue-800">
  {assessment.idealWeightRange.min} - {assessment.idealWeightRange.max} kg
  </div>
@@ -682,7 +682,7 @@ export default function UserProfileSection() {
  </div>
  </div>
  <div className="p-4 rounded-xl bg-purple-900/20 border border-purple-100">
- <div className="text-sm font-semibold text-purple-700 mb-1">% Grasa saludable</div>
+ <div className="text-sm font-semibold text-purple-300 mb-1">% Grasa saludable</div>
  <div className="text-lg font-bold text-purple-800">
  {assessment.healthyBodyFatRange.min}% - {assessment.healthyBodyFatRange.max}%
  </div>

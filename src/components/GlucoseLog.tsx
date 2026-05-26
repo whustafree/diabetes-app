@@ -9,7 +9,7 @@ interface GlucoseLogProps {
 }
 
 function getGlucoseBg(value: number): string {
- if (value < 70) return 'bg-blue-100 text-blue-600';
+ if (value < 70) return 'bg-blue-100 text-blue-400';
  if (value <= 100) return 'bg-green-100 text-green-600';
  if (value <= 140) return 'bg-yellow-100 text-yellow-600';
  if (value <= 200) return 'bg-orange-100 text-orange-600';

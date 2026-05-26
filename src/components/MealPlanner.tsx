@@ -5,9 +5,9 @@ import { mealSlotLabels } from '../types';
 import { generateWeeklyMealPlan, getRecipesByMealSlot, searchRecipes, getMealSuggestionForGlucose } from '../utils/meals';
 
 const igColors: Record<string, string> = {
- bajo: 'bg-green-100 text-green-700',
- medio: 'bg-yellow-100 text-yellow-700',
- alto: 'bg-red-100 text-red-700',
+ bajo: 'bg-green-900/40 text-green-300',
+ medio: 'bg-yellow-900/40 text-yellow-300',
+ alto: 'bg-red-900/40 text-red-300',
 };
 
 export default function MealPlanner() {
@@ -90,7 +90,7 @@ export default function MealPlanner() {
  <h4 className="font-bold text-white text-sm">{glucoseSuggestion.title}</h4>
  <p className="text-sm text-gray-300">{glucoseSuggestion.suggestion}</p>
  <div>
- <p className="text-xs font-semibold text-green-700 mb-1.5">✅ Recomendado:</p>
+ <p className="text-xs font-semibold text-green-400 mb-1.5">✅ Recomendado:</p>
  <ul className="space-y-1">
  {glucoseSuggestion.foods.map((f, i) => (
  <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
@@ -102,7 +102,7 @@ export default function MealPlanner() {
  </div>
  {glucoseSuggestion.avoid.length > 0 && (
  <div>
- <p className="text-xs font-semibold text-red-700 mb-1.5">❌ Evitar:</p>
+ <p className="text-xs font-semibold text-red-300 mb-1.5">❌ Evitar:</p>
  <ul className="space-y-1">
  {glucoseSuggestion.avoid.map((f, i) => (
  <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
@@ -137,7 +137,7 @@ export default function MealPlanner() {
  onClick={() => setSelectedRecipe(recipe)}
  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-700 transition-colors text-left"
  >
- <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-lg">
+ <div className="w-10 h-10 rounded-lg bg-blue-900/30 flex items-center justify-center text-lg">
  {recipe.mealSlot === 'desayuno' ? '🌅' : recipe.mealSlot === 'almuerzo' ? '🌞' : recipe.mealSlot === 'cena' ? '🌙' : '🥜'}
  </div>
  <div className="flex-1 min-w-0">
@@ -201,21 +201,21 @@ export default function MealPlanner() {
  </span>
  </div>
  <div className="grid grid-cols-4 gap-3">
- <div className="text-center p-2 rounded-lg bg-blue-50">
+ <div className="text-center p-2 rounded-lg bg-blue-900/30">
  <div className="text-xs text-blue-400 font-semibold">Proteína</div>
- <div className="text-sm font-bold text-blue-700">{currentDay.totalNutrition.protein}g</div>
+ <div className="text-sm font-bold text-blue-300">{currentDay.totalNutrition.protein}g</div>
  </div>
- <div className="text-center p-2 rounded-lg bg-orange-50">
+ <div className="text-center p-2 rounded-lg bg-orange-900/30">
  <div className="text-xs text-orange-400 font-semibold">Carbohidratos</div>
- <div className="text-sm font-bold text-orange-700">{currentDay.totalNutrition.carbs}g</div>
+ <div className="text-sm font-bold text-orange-300">{currentDay.totalNutrition.carbs}g</div>
  </div>
- <div className="text-center p-2 rounded-lg bg-purple-50">
+ <div className="text-center p-2 rounded-lg bg-purple-900/30">
  <div className="text-xs text-purple-400 font-semibold">Grasas</div>
- <div className="text-sm font-bold text-purple-700">{currentDay.totalNutrition.fat}g</div>
+ <div className="text-sm font-bold text-purple-300">{currentDay.totalNutrition.fat}g</div>
  </div>
- <div className="text-center p-2 rounded-lg bg-green-50">
+ <div className="text-center p-2 rounded-lg bg-green-900/30">
  <div className="text-xs text-green-400 font-semibold">Fibra</div>
- <div className="text-sm font-bold text-green-700">{currentDay.totalNutrition.fiber}g</div>
+ <div className="text-sm font-bold text-green-300">{currentDay.totalNutrition.fiber}g</div>
  </div>
  </div>
  </div>
@@ -230,9 +230,9 @@ export default function MealPlanner() {
  <div className="p-5">
  <div className="flex items-center gap-3 mb-3">
  <div className={`p-2 rounded-xl text-lg ${
- meal.slot === 'desayuno' ? 'bg-yellow-100' :
- meal.slot === 'almuerzo' ? 'bg-orange-100' :
- meal.slot === 'cena' ? 'bg-indigo-100' : 'bg-green-100'
+ meal.slot === 'desayuno' ? 'bg-yellow-900/40' :
+ meal.slot === 'almuerzo' ? 'bg-orange-900/40' :
+ meal.slot === 'cena' ? 'bg-indigo-900/40' : 'bg-green-900/40'
  }`}>
  {meal.slot === 'desayuno' ? '🌅' : meal.slot === 'almuerzo' ? '🌞' : meal.slot === 'cena' ? '🌙' : '🥜'}
  </div>
@@ -340,7 +340,7 @@ function RecipeDetail({ recipe }: { recipe: Recipe }) {
  {/* Recipe Header */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
  <div className="flex items-start gap-4 mb-4">
- <div className="p-3 rounded-2xl text-3xl bg-gradient-to-br from-green-50 to-emerald-50">
+ <div className="p-3 rounded-2xl text-3xl bg-gradient-to-br from-green-900/30 to-emerald-900/30">
  {recipe.mealSlot === 'desayuno' ? '🌅' : recipe.mealSlot === 'almuerzo' ? '🌞' : recipe.mealSlot === 'cena' ? '🌙' : '🥜'}
  </div>
  <div className="flex-1">
@@ -348,7 +348,7 @@ function RecipeDetail({ recipe }: { recipe: Recipe }) {
  <p className="text-sm text-gray-400 mb-2">{recipe.description}</p>
  <div className="flex flex-wrap gap-2">
  {recipe.tags.map(tag => (
- <span key={tag} className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/20 text-blue-600">
+ <span key={tag} className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/20 text-blue-400">
  {tag}
  </span>
  ))}
@@ -409,7 +409,7 @@ function RecipeDetail({ recipe }: { recipe: Recipe }) {
  </h3>
  <ul className="space-y-2">
  {recipe.ingredients.map((ing, i) => (
- <li key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+ <li key={i} className="flex items-center justify-between py-2 border-b border-gray-700 last:border-0">
  <span className="text-sm text-gray-300">{ing.name}</span>
  <span className="text-sm font-semibold text-gray-400 bg-gray-700 px-3 py-1 rounded-lg">{ing.amount}</span>
  </li>

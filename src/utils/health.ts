@@ -36,12 +36,12 @@ export const bmiCategoryLabels: Record<BMICategory, string> = {
 };
 
 export const bmiCategoryColors: Record<BMICategory, string> = {
-  bajo_peso: 'text-blue-600 bg-blue-50',
-  normal: 'text-green-600 bg-green-50',
-  sobrepeso: 'text-yellow-600 bg-yellow-50',
-  obesidad_grado1: 'text-orange-600 bg-orange-50',
-  obesidad_grado2: 'text-red-600 bg-red-50',
-  obesidad_grado3: 'text-red-700 bg-red-100',
+  bajo_peso: 'text-blue-400 bg-blue-900/30',
+  normal: 'text-green-400 bg-green-900/30',
+  sobrepeso: 'text-yellow-400 bg-yellow-900/30',
+  obesidad_grado1: 'text-orange-400 bg-orange-900/30',
+  obesidad_grado2: 'text-red-400 bg-red-900/30',
+  obesidad_grado3: 'text-red-300 bg-red-900/40',
 };
 
 // ─── Body Fat Percentage (US Navy / BMI-based) ───
@@ -74,10 +74,10 @@ export function getHealthyBodyFatRange(gender: Gender): { min: number; max: numb
 
 export function getBodyFatColor(percentage: number, gender: Gender): string {
   const cat = getBodyFatCategory(percentage, gender);
-  if (cat.includes('Esencial') || cat.includes('Saludable')) return 'text-green-600 bg-green-50';
-  if (cat.includes('Normal')) return 'text-blue-600 bg-blue-50';
-  if (cat.includes('Aceptable')) return 'text-yellow-600 bg-yellow-50';
-  return 'text-red-600 bg-red-50';
+  if (cat.includes('Esencial') || cat.includes('Saludable')) return 'text-green-400 bg-green-900/30';
+  if (cat.includes('Normal')) return 'text-blue-400 bg-blue-900/30';
+  if (cat.includes('Aceptable')) return 'text-yellow-400 bg-yellow-900/30';
+  return 'text-red-400 bg-red-900/30';
 }
 
 // ─── BMR (Mifflin-St Jeor) ───
@@ -163,10 +163,10 @@ export const riskLevelLabels: Record<HealthRiskLevel, string> = {
 };
 
 export const riskLevelColors: Record<HealthRiskLevel, string> = {
-  bajo: 'text-green-600 bg-green-50 border-green-200',
-  moderado: 'text-yellow-600 bg-yellow-50 border-yellow-200',
-  alto: 'text-orange-600 bg-orange-50 border-orange-200',
-  muy_alto: 'text-red-600 bg-red-50 border-red-200',
+  bajo: 'text-green-400 bg-green-900/30 border-green-200',
+  moderado: 'text-yellow-600 bg-yellow-900/30 border-yellow-800',
+  alto: 'text-orange-400 bg-orange-900/30 border-orange-200',
+  muy_alto: 'text-red-600 bg-red-900/30 border-red-800',
 };
 
 function assessRisks(profile: UserProfile, bmi: number, bodyFat: number): HealthRisk[] {

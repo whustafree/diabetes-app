@@ -184,7 +184,7 @@ export const categoryColors: Record<GlucoseCategory, string> = {
 };
 
 export const categoryTextColors: Record<GlucoseCategory, string> = {
-  bajo: 'text-blue-600',
+  bajo: 'text-blue-400',
   normal: 'text-green-600',
   elevado: 'text-yellow-600',
   alto: 'text-orange-600',

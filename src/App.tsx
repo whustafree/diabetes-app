@@ -284,7 +284,7 @@ export default function App() {
  <div className="p-3 border-b border-gray-700 flex items-center justify-between">
  <h4 className="text-sm font-bold text-white">Notificaciones</h4>
  {notificationsHistory.length > 0 && (
- <button onClick={markAllRead} className="text-[11px] text-blue-400 font-semibold hover:text-blue-600 transition">
+ <button onClick={markAllRead} className="text-[11px] text-blue-400 font-semibold hover:text-blue-400 transition">
  Marcar todas leídas
  </button>
  )}

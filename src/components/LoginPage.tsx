@@ -253,7 +253,7 @@ export default function LoginPage() {
  <button
  type="button"
  onClick={() => { setMode('reset'); setError(''); setSuccess(''); }}
- className="text-sm text-gray-400 text-gray-400 hover:text-blue-600 hover:text-blue-400 transition-colors"
+ className="text-sm text-gray-400 text-gray-400 hover:text-blue-400 hover:text-blue-400 transition-colors"
  >
  ¿Olvidaste tu contraseña?
  </button>

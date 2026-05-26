@@ -32,7 +32,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  Para usar autenticación en la nube, configura Firebase:
  </p>
  <ol className="text-sm text-gray-300 space-y-2 mb-4 list-decimal list-inside">
- <li>Crea un proyecto en <a href="https://console.firebase.google.com"className="text-blue-600 underline"target="_blank"rel="noopener">Firebase Console</a></li>
+ <li>Crea un proyecto en <a href="https://console.firebase.google.com"className="text-blue-400 underline"target="_blank"rel="noopener">Firebase Console</a></li>
  <li>Agrega una App Web y copia la configuración</li>
  <li>Crea un archivo <code className="bg-gray-700 px-2 py-0.5 rounded text-xs">.env</code> en la raíz del proyecto</li>
  <li>Pega las variables del <code className="bg-gray-700 px-2 py-0.5 rounded text-xs">.env.example</code> con tus valores</li>
@@ -204,7 +204,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  setLoading(false);
  }
  }}
- className="text-xs text-gray-400 text-gray-400 hover:text-blue-600 hover:text-blue-400 transition-colors mt-2"
+ className="text-xs text-gray-400 text-gray-400 hover:text-blue-400 hover:text-blue-400 transition-colors mt-2"
  >
  ¿Olvidaste tu contraseña?
  </button>

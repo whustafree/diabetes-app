@@ -218,7 +218,7 @@ export default function NotificationsPage() {
  {/* Header */}
  <div className="text-center">
  <div className="flex items-center justify-center gap-3 mb-2">
- <BellRing className="w-7 h-7 text-blue-600"/>
+ <BellRing className="w-7 h-7 text-blue-400"/>
  <h2 className="text-2xl font-extrabold text-white">Centro de Notificaciones</h2>
  </div>
  <p className="text-gray-400 text-gray-400 text-sm">
@@ -370,7 +370,7 @@ export default function NotificationsPage() {
  </div>
  <button
  onClick={() => setShowFilters(!showFilters)}
- className={`p-2.5 rounded-xl transition-all ${showFilters ? 'bg-blue-100 bg-blue-900/40 text-blue-600' : 'bg-gray-700 text-gray-400 hover:text-gray-400 hover:text-gray-300'}`}
+ className={`p-2.5 rounded-xl transition-all ${showFilters ? 'bg-blue-100 bg-blue-900/40 text-blue-400' : 'bg-gray-700 text-gray-400 hover:text-gray-400 hover:text-gray-300'}`}
  title="Filtrar por tipo"
  >
  <Filter className="w-4 h-4"/>
@@ -416,7 +416,7 @@ export default function NotificationsPage() {
  {(search || typeFilter !== 'all') && (
  <button
  onClick={() => { setSearch(''); setTypeFilter('all'); }}
- className="mt-2 text-xs text-blue-400 font-semibold hover:text-blue-600 transition"
+ className="mt-2 text-xs text-blue-400 font-semibold hover:text-blue-400 transition"
  >
  Limpiar filtros
  </button>

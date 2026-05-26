@@ -35,6 +35,19 @@ function isOfflineError(err: any): boolean {
 }
 
 /**
+ * Detecta el error "Target ID already exists" del SDK de Firestore v11.
+ * Este error ocurre cuando el SDK interno de gRPC recibe una solicitud
+ * para crear un watch target que ya existe. Es un bug conocido del SDK.
+ * Cuando ocurre, debemos irnos inmediatamente a REST API.
+ */
+function isTargetIdExistsError(err: any): boolean {
+  return (
+    err?.message?.includes?.('Target ID already exists') ||
+    err?.code === 'firestore/target-id-exists'
+  );
+}
+
+/**
  * Intenta habilitar la red de Firestore.
  */
 async function ensureNetwork(db: ReturnType<typeof getFirestoreDB>): Promise<void> {
@@ -133,6 +146,12 @@ export async function loadFromCloud<T>(
           if (!snapshot.exists()) return null;
           return snapshot.data() as CloudData<T>;
         } catch (err: any) {
+          // Error "Target ID already exists" — bug conocido del SDK v11.
+          // No reintentar con SDK, ir directamente a REST API.
+          if (isTargetIdExistsError(err)) {
+            console.warn(`[SDK] Target ID conflict en ${collectionName}, usando REST API como fallback`);
+            break;
+          }
           if (isOfflineError(err) && attempt < MAX_RETRIES) {
             console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
             await delay(RETRY_DELAY_MS);

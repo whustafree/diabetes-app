@@ -64,7 +64,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       setCloudStatus('offline');
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   // Cloud sync: sincronización automática ante cambios (debounced 1.5s)
   useEffect(() => {
@@ -77,7 +77,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       });
     }, 1500);
     return () => { if (syncTimer.current) clearTimeout(syncTimer.current); };
-  }, [entries, user, firebaseReady]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entries, user?.uid, firebaseReady]);
 
   const handleEntryAdded = (updatedEntries: GlucoseEntry[]) => {
     setEntries(updatedEntries);

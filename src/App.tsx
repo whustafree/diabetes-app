@@ -59,7 +59,7 @@ export default function App() {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   // ─── SYNC PERFIL CON FIRESTORE ───
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function App() {
       cancelled = true;
       if (retryTimer.current) clearTimeout(retryTimer.current);
     };
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   // Guardar tema en Firestore cuando cambie
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function App() {
       saveThemeToCloud(user.uid, isDark ? 'dark' : 'light');
     }, 500);
     return () => clearTimeout(timer);
-  }, [isDark, user, firebaseReady]);
+  }, [isDark, user?.uid, firebaseReady]);
 
   // ─── NOTIFICACIONES PUSH ───
   const [notification, setNotification] = useState<{
@@ -158,7 +158,7 @@ export default function App() {
       unsub();
       unsubScheduler();
     };
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   // Sincronizar Badging API con unreadCount
   useEffect(() => {

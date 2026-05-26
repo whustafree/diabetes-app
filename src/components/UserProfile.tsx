@@ -35,6 +35,7 @@ export default function UserProfileSection() {
     !(user && firebaseReady) || !!profile
   );
   const cloudInitDone = useRef(false);
+  const lastSyncedUid = useRef<string | undefined>(undefined);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
@@ -87,16 +88,26 @@ export default function UserProfileSection() {
       setCloudSyncing(false);
       setInitialSyncDone(true);
     }
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   // Cloud sync: carga inicial desde Firebase
   useEffect(() => {
     if (!user || !firebaseReady) {
       cloudInitDone.current = true;
+      lastSyncedUid.current = undefined;
       setCloudStatus('offline');
       setInitialSyncDone(true);
       return;
     }
+
+    // Si el uid cambió (otro usuario), resetear el flag de inicialización
+    if (lastSyncedUid.current !== user.uid) {
+      cloudInitDone.current = false;
+      lastSyncedUid.current = user.uid;
+    }
+    // Evitar doble ejecución (StrictMode o re-montaje)
+    if (cloudInitDone.current) return;
+
     setCloudStatus('syncing');
     loadProfileFromCloud(user.uid).then(cloudProfile => {
       cloudInitDone.current = true;
@@ -122,7 +133,7 @@ export default function UserProfileSection() {
       setInitialSyncDone(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, firebaseReady]);
+  }, [user?.uid, firebaseReady]);
 
   const handleSave = () => {
     setCloudError(null);
@@ -435,7 +446,7 @@ export default function UserProfileSection() {
       setCloudError(`Error al subir: ${err?.message || 'No se pudo conectar con Firebase.'}`);
       return false;
     }
-  }, [user, firebaseReady, profile]);
+  }, [user?.uid, firebaseReady, profile]);
 
   // ─── VISTA DEL PERFIL ───
 

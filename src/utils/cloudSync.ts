@@ -1,5 +1,5 @@
-import { doc, getDoc, setDoc, enableNetwork } from 'firebase/firestore';
-import { getFirestoreDB } from '../firebase/config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestoreDB, isFirestoreAvailable, markFirestoreFailed } from '../firebase/config';
 import {
   saveToCloudViaRest,
   loadFromCloudViaRest,
@@ -21,6 +21,20 @@ function getDocCacheKey(uid: string, collectionName: string): string {
 
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Detecta el error FIRESTORE INTERNAL ASSERTION FAILED.
+ * Este error indica una falla interna del SDK de Firestore que hace
+ * que el SDK entre en un bucle infinito. Cuando ocurre, debemos
+ * marcar Firestore como no disponible y usar solo REST API.
+ */
+function isInternalAssertionError(err: any): boolean {
+  return (
+    err?.message?.includes?.('INTERNAL ASSERTION FAILED') ||
+    err?.message?.includes?.('Unexpected state') ||
+    false
+  );
 }
 
 /**
@@ -47,17 +61,6 @@ function isTargetIdExistsError(err: any): boolean {
   );
 }
 
-/**
- * Intenta habilitar la red de Firestore.
- */
-async function ensureNetwork(db: ReturnType<typeof getFirestoreDB>): Promise<void> {
-  try {
-    await enableNetwork(db);
-  } catch {
-    // Ignorar si ya está online
-  }
-}
-
 export interface CloudData<T> {
   items: T[];
   updatedAt: string;
@@ -79,11 +82,16 @@ export async function saveToCloud<T>(
   collectionName: string,
   items: T[]
 ): Promise<boolean> {
+  // ── Verificar si Firestore SDK está disponible ──
+  if (!isFirestoreAvailable()) {
+    console.info('[SDK] Firestore no disponible, yendo directo a REST API');
+    return saveToCloudViaRest(uid, collectionName, items);
+  }
+
   // ── Intento 1: SDK de Firestore ──
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const db = getFirestoreDB();
-      await ensureNetwork(db);
       const ref = doc(db, 'users', uid, collectionName, 'all');
       await setDoc(ref, {
         items: JSON.parse(JSON.stringify(items)),
@@ -91,6 +99,12 @@ export async function saveToCloud<T>(
       } satisfies CloudData<T>);
       return true;
     } catch (err: any) {
+      // Error de aserción interna — Firestore SDK no es confiable, marcar como fallido
+      if (isInternalAssertionError(err)) {
+        console.error('[SDK] Error interno de Firestore SDK, deshabilitando SDK y usando REST API');
+        markFirestoreFailed();
+        break;
+      }
       if (isOfflineError(err) && attempt < MAX_RETRIES) {
         console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
         await delay(RETRY_DELAY_MS);
@@ -100,7 +114,6 @@ export async function saveToCloud<T>(
         console.warn('[SDK] Firestore offline, usando REST API como fallback');
       } else {
         console.error(`[SDK] Error guardando ${collectionName}:`, err);
-        // Para errores que no son offline, intentar REST igual
       }
     }
   }
@@ -134,18 +147,31 @@ export async function loadFromCloud<T>(
     return existing as Promise<CloudData<T> | null>;
   }
 
+  // ── Verificar si Firestore SDK está disponible ──
+  if (!isFirestoreAvailable()) {
+    console.info('[SDK] Firestore no disponible, yendo directo a REST API');
+    const result = await loadFromCloudViaRest<T>(uid, collectionName);
+    pendingDocReads.delete(cacheKey);
+    return result;
+  }
+
   // ── Intento 1: SDK de Firestore ──
   const promise = (async () => {
     try {
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {
           const db = getFirestoreDB();
-          await ensureNetwork(db);
           const ref = doc(db, 'users', uid, collectionName, 'all');
           const snapshot = await getDoc(ref);
           if (!snapshot.exists()) return null;
           return snapshot.data() as CloudData<T>;
         } catch (err: any) {
+          // Error de aserción interna — Firestore SDK no es confiable
+          if (isInternalAssertionError(err)) {
+            console.error('[SDK] Error interno de Firestore SDK, deshabilitando SDK y usando REST API');
+            markFirestoreFailed();
+            break;
+          }
           // Error "Target ID already exists" — bug conocido del SDK v11.
           // No reintentar con SDK, ir directamente a REST API.
           if (isTargetIdExistsError(err)) {

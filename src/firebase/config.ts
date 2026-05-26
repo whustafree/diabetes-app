@@ -1,5 +1,5 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth, connectAuthEmulator } from 'firebase/auth';
+import { getAuth, type Auth } from 'firebase/auth';
 import { initializeFirestore, type Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -14,6 +14,27 @@ const firebaseConfig = {
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
+
+// Flag para detectar si el SDK de Firestore falló internamente
+// (ej: error FIRESTORE INTERNAL ASSERTION FAILED). Cuando esto ocurre,
+// toda la app debe usar REST API como fallback.
+let firestoreFailed = false;
+
+/**
+ * Marca Firestore como no disponible. Todas las llamadas al SDK
+ * deben redirigirse a REST API.
+ */
+export function markFirestoreFailed(): void {
+  firestoreFailed = true;
+}
+
+/**
+ * Verifica si el SDK de Firestore está disponible para usar.
+ * Si retorna false, usar REST API como único mecanismo de sync.
+ */
+export function isFirestoreAvailable(): boolean {
+  return !firestoreFailed;
+}
 
 export function getFirebaseApp(): FirebaseApp {
   if (!app) {
@@ -30,15 +51,25 @@ export function getFirebaseAuth(): Auth {
 }
 
 export function getFirestoreDB(): Firestore {
-  if (!db) {
-    // Usamos HTTP long polling en lugar de WebSockets para evitar
-    // el error "Failed to get document because the client is offline"
-    // que ocurre cuando firewalls o proxies bloquean WebSockets.
-    db = initializeFirestore(getFirebaseApp(), {
-      experimentalForceLongPolling: true,
-    });
+  if (!db && !firestoreFailed) {
+    try {
+      // Usamos HTTP long polling en lugar de WebSockets para evitar
+      // el error "Failed to get document because the client is offline"
+      // que ocurre cuando firewalls o proxies bloquean WebSockets.
+      db = initializeFirestore(getFirebaseApp(), {
+        experimentalForceLongPolling: true,
+      });
+    } catch (err) {
+      console.error('[Firestore] Error al inicializar Firestore SDK:', err);
+      firestoreFailed = true;
+    }
   }
-  return db;
+  // Si firestoreFailed, lanzar error claro para que los callers
+  // (AuthContext, etc.) atrapen correctamente en sus try-catch
+  if (firestoreFailed) {
+    throw new Error('Firestore SDK no disponible (error interno de aserción). Usando REST API como fallback.');
+  }
+  return db!;
 }
 
 // Verificar si Firebase está configurado (no valores vacíos)

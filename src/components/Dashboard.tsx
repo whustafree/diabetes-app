@@ -28,7 +28,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  const { profile, assessment, medications, reminders, greeting, GreetingIcon, upcomingMeds, todayReminders } = useAppData();
 
  const [entries, setEntries] = useState<GlucoseEntry[]>(() => loadEntries());
- const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');  const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
+ const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');
+  const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const cloudInitDone = useRef(false);
   const syncTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -644,7 +645,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  </div>
  </div>
  )}
- </div>    </div>
+   </div>
     </PullToRefresh>
   );
 }

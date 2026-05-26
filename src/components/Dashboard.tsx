@@ -41,7 +41,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  const healthScore = useMemo(() => calculateHealthScore(entries), [entries]); 
  const weekTrend = useMemo(() => getWeeklyTrend(entries), [entries]);
 
- // Cloud sync: carga inicial desde Firebase  useEffect(() => {
+ // Cloud sync: carga inicial desde Firebase
+ useEffect(() => {
     if (!user || !firebaseReady) {
       cloudInitDone.current = true;
       setCloudStatus('offline');

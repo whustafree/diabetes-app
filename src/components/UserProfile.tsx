@@ -448,7 +448,7 @@ export default function UserProfileSection() {
   if (!profile || !assessment) return null;
 
   return (
- <PullToRefresh onRefresh={syncProfileFromCloud}>
+ <PullToRefresh onRefresh={async () => { await syncProfileFromCloud(); }}>
  <div className="max-w-4xl mx-auto space-y-6">
  {/* Profile Header */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">

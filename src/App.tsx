@@ -65,8 +65,12 @@ export default function App() {
   useEffect(() => {
     if (!user || !firebaseReady) return;
 
+    let cancelled = false;
+    const retryTimer: { current: ReturnType<typeof setTimeout> | null } = { current: null };
+
     setProfileSyncStatus('syncing');
     loadProfileFromCloud(user.uid).then(cloudProfile => {
+      if (cancelled) return;
       if (cloudProfile) {
         saveProfile(cloudProfile);
         setProfileSyncKey(prev => prev + 1);
@@ -75,10 +79,18 @@ export default function App() {
         setProfileSyncStatus('idle');
       }
     }).catch(() => {
+      if (cancelled) return;
       setProfileSyncStatus('offline');
       // Reintentar después de 5 segundos
-      setTimeout(() => setProfileSyncStatus('idle'), 5000);
+      retryTimer.current = setTimeout(() => {
+        if (!cancelled) setProfileSyncStatus('idle');
+      }, 5000);
     });
+
+    return () => {
+      cancelled = true;
+      if (retryTimer.current) clearTimeout(retryTimer.current);
+    };
   }, [user, firebaseReady]);
 
   // Guardar tema en Firestore cuando cambie

@@ -8,6 +8,17 @@ import {
 const MAX_RETRIES = 2;
 const RETRY_DELAY_MS = 800;
 
+/**
+ * Caché de promesas para evitar llamadas simultáneas al mismo documento.
+ * Soluciona el error "Target ID already exists" que ocurre cuando múltiples
+ * componentes llaman getDoc() sobre el mismo documento al mismo tiempo.
+ */
+const pendingDocReads = new Map<string, Promise<any>>();
+
+function getDocCacheKey(uid: string, collectionName: string): string {
+  return `${uid}:${collectionName}`;
+}
+
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -101,32 +112,53 @@ export async function loadFromCloud<T>(
   uid: string,
   collectionName: string
 ): Promise<CloudData<T> | null> {
-  // ── Intento 1: SDK de Firestore ──
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const db = getFirestoreDB();
-      await ensureNetwork(db);
-      const ref = doc(db, 'users', uid, collectionName, 'all');
-      const snapshot = await getDoc(ref);
-      if (!snapshot.exists()) return null;
-      return snapshot.data() as CloudData<T>;
-    } catch (err: any) {
-      if (isOfflineError(err) && attempt < MAX_RETRIES) {
-        console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
-        await delay(RETRY_DELAY_MS);
-        continue;
-      }
-      if (isOfflineError(err)) {
-        console.warn('[SDK] Firestore offline, usando REST API como fallback');
-      } else {
-        console.error(`[SDK] Error cargando ${collectionName}:`, err);
-      }
-    }
+  const cacheKey = getDocCacheKey(uid, collectionName);
+
+  // Si ya hay una lectura en curso para este mismo documento, reutilizar la promesa
+  // Esto evita el error "Target ID already exists" del SDK de Firestore
+  const existing = pendingDocReads.get(cacheKey);
+  if (existing) {
+    return existing as Promise<CloudData<T> | null>;
   }
 
-  // ── Fallback: REST API ──
-  console.info('[REST] Cargando usando REST API...');
-  return loadFromCloudViaRest<T>(uid, collectionName);
+  // ── Intento 1: SDK de Firestore ──
+  const promise = (async () => {
+    try {
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const db = getFirestoreDB();
+          await ensureNetwork(db);
+          const ref = doc(db, 'users', uid, collectionName, 'all');
+          const snapshot = await getDoc(ref);
+          if (!snapshot.exists()) return null;
+          return snapshot.data() as CloudData<T>;
+        } catch (err: any) {
+          if (isOfflineError(err) && attempt < MAX_RETRIES) {
+            console.warn(`[SDK] Intento ${attempt}/${MAX_RETRIES} offline, reintentando...`);
+            await delay(RETRY_DELAY_MS);
+            continue;
+          }
+          if (isOfflineError(err)) {
+            console.warn('[SDK] Firestore offline, usando REST API como fallback');
+          } else {
+            console.error(`[SDK] Error cargando ${collectionName}:`, err);
+          }
+        }
+      }
+
+      // ── Fallback: REST API ──
+      console.info('[REST] Cargando usando REST API...');
+      return loadFromCloudViaRest<T>(uid, collectionName);
+    } finally {
+      // Limpiar la caché una vez que la promesa se resuelva (éxito o error)
+      pendingDocReads.delete(cacheKey);
+    }
+  })();
+
+  // Guardar la promesa en la caché
+  pendingDocReads.set(cacheKey, promise);
+
+  return promise;
 }
 
 /**

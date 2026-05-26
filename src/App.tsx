@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Activity, User, Salad, Scale, Bell, Pill, Cloud, CloudOff, RefreshCw, LogOut, X, Loader2, BellRing, BellPlus, ChevronDown, Settings, Utensils } from 'lucide-react';
+import PageTransition from './components/PageTransition';
 import { useAuth } from './contexts/AuthContext';
 import { saveProfile } from './utils/health';
 import { loadProfileFromCloud } from './utils/profileSync';
@@ -424,25 +425,26 @@ export default function App() {
 
  {/* Main Content */}
  <main className="py-6 px-4 sm:px-6 lg:px-8">
- <div className="max-w-6xl mx-auto">
- <Suspense fallback={
- <div className="flex items-center justify-center py-20">
- <div className="text-center">
- <RefreshCw className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-3"/>
- <p className="text-sm text-gray-400 text-gray-500">Cargando sección...</p>
- </div>
- </div>
- }>
- {section === 'dashboard' && <Dashboard key={profileSyncKey} onNavigate={setSection} />}
- {section === 'profile' && <UserProfileSection />}
- {section === 'meals' && <MealPlanner />}
- {section === 'diet' && <DietPlan />}
- {section === 'medications' && <Medications />}
- {section === 'reminders' && <Reminders />}
- {section === 'notifications' && <NotificationsPage />}
- {section === 'settings' && <SettingsPage />}
- {section === 'foodlog' && <FoodLog />}
- </Suspense>
+ <div className="max-w-6xl mx-auto">          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <RefreshCw className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-3"/>
+                <p className="text-sm text-gray-400 text-gray-500">Cargando sección...</p>
+              </div>
+            </div>
+          }>
+            <PageTransition transitionKey={section}>
+              {section === 'dashboard' && <Dashboard key={profileSyncKey} onNavigate={setSection} />}
+              {section === 'profile' && <UserProfileSection />}
+              {section === 'meals' && <MealPlanner />}
+              {section === 'diet' && <DietPlan />}
+              {section === 'medications' && <Medications />}
+              {section === 'reminders' && <Reminders />}
+              {section === 'notifications' && <NotificationsPage />}
+              {section === 'settings' && <SettingsPage />}
+              {section === 'foodlog' && <FoodLog />}
+            </PageTransition>
+          </Suspense>
  </div>
  </main>
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { MealType, GlucoseEntry } from '../types';
 import { mealLabels } from '../types';
 import { addEntry, generateId } from '../utils/helpers';
-import { PlusCircle, Syringe, Apple, StickyNote } from 'lucide-react';
+import { PlusCircle, Syringe, Apple, StickyNote, AlertTriangle, CheckCircle } from 'lucide-react';
 
 interface GlucoseFormProps {
  onEntryAdded: (entries: GlucoseEntry[]) => void;
@@ -84,14 +84,52 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  min={20}
  max={600}
  required
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-lg font-medium"
+ className={`w-full px-4 py-3 rounded-xl border text-white placeholder:text-gray-400 focus:outline-none transition-all text-lg font-medium ${
+   value && glucoseValue >= 20 && glucoseValue <= 600
+    ? 'bg-gray-700 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
+    : value
+    ? 'bg-gray-700 border-red-500/50 focus:border-red-500 focus:ring-2 focus:ring-red-500/50'
+    : 'bg-gray-700 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
+ }`}
  autoFocus
  />
- <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 text-gray-400 font-medium">
+ <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-medium">
  mg/dL
  </span>
  </div>
- {value && (
+
+ {/* Validation feedback inline */}
+ {value && !isNaN(glucoseValue) && glucoseValue >= 20 && glucoseValue <= 600 && (
+   <div className={`mt-2 flex items-center gap-1.5 text-xs font-semibold ${
+    glucoseValue < 70
+     ? 'text-blue-400'
+     : glucoseValue <= 100
+     ? 'text-green-400'
+     : glucoseValue <= 140
+     ? 'text-yellow-400'
+     : 'text-orange-400'
+   }`}>
+    {glucoseValue < 70 ? (
+     <><AlertTriangle className="w-3.5 h-3.5"/> Glucosa baja — considera consumir carbohidratos</>
+    ) : glucoseValue <= 100 ? (
+     <><CheckCircle className="w-3.5 h-3.5"/> Glucosa normal — excelente</>
+    ) : glucoseValue <= 140 ? (
+     <><AlertTriangle className="w-3.5 h-3.5"/> Glucosa elevada — monitorea tu nivel</>
+    ) : (
+     <><AlertTriangle className="w-3.5 h-3.5"/> Glucosa alta — consulta con tu médico</>
+    )}
+   </div>
+  )}
+
+  {/* Error feedback */}
+  {value && !isNaN(glucoseValue) && (glucoseValue < 20 || glucoseValue > 600) && (
+   <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-red-400">
+    <AlertTriangle className="w-3.5 h-3.5"/> Valores deben estar entre 20-600 mg/dL
+   </div>
+  )}
+
+ {/* Quick select buttons */}
+ {value && glucoseValue >= 20 && glucoseValue <= 600 && (
  <div className="mt-2 flex gap-2">
  {[70, 100, 140, 180, 250].map((v) => (
  <button
@@ -166,16 +204,17 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  rows={2}
  className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
  />
- </div>
-
- <button
- type="submit"
- disabled={!isValid}
- className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3.5 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98]"
- >
- <PlusCircle className="w-5 h-5"/>
- Registrar Medición
- </button>
+ </div>   <button
+    type="submit"
+    disabled={!isValid}
+    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3.5 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98]"
+   >
+    {!isValid && value ? (
+     <><AlertTriangle className="w-5 h-5"/> Valor fuera de rango (20-600)</>
+    ) : (
+     <><PlusCircle className="w-5 h-5"/> Registrar Medición</>
+    )}
+   </button>
  </form>
  );
 }

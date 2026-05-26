@@ -8,7 +8,10 @@ import StatsCard from './StatsCard';
 import GlucoseForm from './GlucoseForm';
 import GlucoseChart from './GlucoseChart';
 import GlucoseLog from './GlucoseLog';
-import { History, LayoutDashboard, Activity, Cloud, CloudOff, RefreshCw, UserPlus, Pill, Bell, Timer, AlertTriangle, Heart, Target, ChevronRight, Sparkles } from 'lucide-react';
+import SkeletonLoader from './SkeletonLoader';
+import EmptyState from './EmptyState';
+import PullToRefresh from './PullToRefresh';
+import { History, LayoutDashboard, Activity, Cloud, CloudOff, RefreshCw, UserPlus, Pill, Bell, Timer, AlertTriangle, Heart, Target, ChevronRight, Sparkles, Inbox } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { saveGlucoseToCloud, loadGlucoseFromCloud, mergeGlucose } from '../utils/glucoseSync';
 import { calculateHealthScore, getWeeklyTrend } from '../utils/healthScore';
@@ -25,10 +28,10 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  const { profile, assessment, medications, reminders, greeting, GreetingIcon, upcomingMeds, todayReminders } = useAppData();
 
  const [entries, setEntries] = useState<GlucoseEntry[]>(() => loadEntries());
- const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');
- const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
- const cloudInitDone = useRef(false);
- const syncTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+ const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');  const [cloudStatus, setCloudStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const cloudInitDone = useRef(false);
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
  const stats = getDailyStats(entries.slice(0, 7));
  const lastValue = entries[0]?.value ?? 0;
@@ -37,34 +40,35 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  const healthScore = useMemo(() => calculateHealthScore(entries), [entries]); 
  const weekTrend = useMemo(() => getWeeklyTrend(entries), [entries]);
 
- // Cloud sync: carga inicial desde Firebase
- useEffect(() => {
- if (!user || !firebaseReady) {
- cloudInitDone.current = true;
- setCloudStatus('offline');
- return;
- }
- setCloudStatus('syncing');
- loadGlucoseFromCloud(user.uid).then(cloudData => {
- const { entries: merged, fromCloud } = mergeGlucose(entries, cloudData);
- setEntries(merged);
- saveEntries(merged);
- cloudInitDone.current = true;
- if (fromCloud) {
- setCloudStatus('synced');
- } else if (merged.length > 0) {
- saveGlucoseToCloud(user.uid, merged).then(ok => {
- setCloudStatus(ok ? 'synced' : 'offline');
- });
- } else {
- setCloudStatus('synced');
- }
- }).catch(() => {
- cloudInitDone.current = true;
- setCloudStatus('offline');
- });
- // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [user?.uid, firebaseReady]);
+ // Cloud sync: carga inicial desde Firebase  useEffect(() => {
+    if (!user || !firebaseReady) {
+      cloudInitDone.current = true;
+      setCloudStatus('offline');
+      return;
+    }
+    setCloudStatus('syncing');
+    loadGlucoseFromCloud(user.uid).then(cloudData => {
+      const { entries: merged, fromCloud } = mergeGlucose(entries, cloudData);
+      setEntries(merged);
+      saveEntries(merged);
+      cloudInitDone.current = true;
+      if (fromCloud) {
+        setCloudStatus('synced');
+      } else if (merged.length > 0) {
+        saveGlucoseToCloud(user.uid, merged).then(ok => {
+          setCloudStatus(ok ? 'synced' : 'offline');
+        });
+      } else {
+        setCloudStatus('synced');
+      }
+    }).catch(() => {
+      cloudInitDone.current = true;
+      setCloudStatus('offline');
+    }).finally(() => {
+      setIsInitialLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid, firebaseReady]);
 
  // Cloud sync: sincronización automática ante cambios (debounced 1.5s)
  useEffect(() => {
@@ -123,18 +127,46 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  });
  }, 1000);
  return () => clearInterval(interval);
- }, []);
+ }, []);  const formatCountdown = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+  };
 
- const formatCountdown = (s: number) => {
- const m = Math.floor(s / 60);
- const sec = s % 60;
- return `${m}:${sec.toString().padStart(2, '0')}`;
- };
+  const liveStatus = liveGlucose !== null ? getGlucoseStatus(liveGlucose) : null;
 
- const liveStatus = liveGlucose !== null ? getGlucoseStatus(liveGlucose) : null;
+  // ─── Pull-to-refresh handler ───
+  const handleRefresh = async () => {
+    const fresh = loadEntries();
+    setEntries(fresh);
+    if (user && firebaseReady) {
+      try {
+        const cloudData = await loadGlucoseFromCloud(user.uid);
+        const { entries: merged } = mergeGlucose(fresh, cloudData);
+        setEntries(merged);
+        saveEntries(merged);
+      } catch {}
+    }
+  };
 
- return (
- <div className="max-w-5xl mx-auto space-y-6">
+  // ─── Skeleton Loading ───
+  if (isInitialLoading && entries.length === 0) {
+    return (
+      <div className="max-w-5xl mx-auto space-y-6 animate-[fadeIn_0.3s_ease-out]">
+        <SkeletonLoader variant="chart" />
+        <SkeletonLoader variant="card" count={4} />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <SkeletonLoader variant="list" />
+          <SkeletonLoader variant="list" />
+        </div>
+        <SkeletonLoader variant="stats-grid" />
+      </div>
+    );
+  }
+
+  return (
+    <PullToRefresh onRefresh={handleRefresh}>
+    <div className="max-w-5xl mx-auto space-y-6">
  {/* ─── REAL-TIME GLUCOSE WIDGET ─── */}
  {entries.length > 0 && liveGlucose !== null && liveStatus && (
  <div className="card-enter bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700 overflow-hidden relative">
@@ -603,8 +635,9 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  </div>
  </div>
  )}
- </div>
- );
+ </div>    </div>
+    </PullToRefresh>
+  );
 }
 
 // ─── HEALTH SCORE CARD ───

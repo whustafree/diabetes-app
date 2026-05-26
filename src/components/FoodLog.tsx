@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { UtensilsCrossed, Plus, X, Search, Trash2, Apple, Beef, Wheat, Droplets, Timer, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
+import { UtensilsCrossed, Plus, X, Search, Trash2, Apple, Beef, Wheat, Droplets, Timer, TrendingUp, ChevronDown, ChevronUp, Inbox } from 'lucide-react';
+import EmptyState from './EmptyState';
 import type { FoodLogEntry, FoodLogMealType } from '../types';
 import { foodLogMealLabels, foodLogMealIcons } from '../types';
 import { loadFoodLog, addFoodEntry, deleteFoodEntry, getWeekFoodLog, getFoodLogStats } from '../utils/foodLog';
@@ -99,28 +100,22 @@ export default function FoodLog() {
  />
  </div>
 
- {/* Lista de comidas */}
+ {/* Empty / No results */}
  {filtered.length === 0 ? (
- <div className="bg-gray-800 rounded-2xl p-12 shadow-sm border border-gray-700 text-center">
- <UtensilsCrossed className="w-12 h-12 text-gray-100 text-gray-400 mx-auto mb-3"/>
- <h3 className="text-base font-bold text-white mb-1">
- {searchQuery ? 'Sin resultados' : 'No hay comidas registradas'}
- </h3>
- <p className="text-sm text-gray-400 text-gray-400 max-w-xs mx-auto">
- {searchQuery
+ <EmptyState
+ icon={searchQuery ? Search : Inbox}
+ emoji={searchQuery ? undefined : '🍽️'}
+ title={searchQuery ? 'Sin resultados' : 'No hay comidas registradas'}
+ description={searchQuery
  ? 'Intenta con otros términos de búsqueda'
- : 'Registra tu primera comida para empezar a llevar el control de tu alimentación'}
- </p>
- {!searchQuery && (
- <button
- onClick={() => setShowForm(true)}
- className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:from-orange-600 hover:to-red-600 transition-all active:scale-95"
- >
- <Plus className="w-4 h-4"/>
- Registrar comida
- </button>
- )}
- </div>
+ : 'Registra tu primera comida para empezar a llevar el control de tu alimentación'
+ }
+ action={!searchQuery ? {
+ label: 'Registrar comida',
+ onClick: () => setShowForm(true),
+ icon: Plus,
+ } : undefined}
+ />
  ) : (
  <div className="space-y-3">
  {filtered.map(entry => (

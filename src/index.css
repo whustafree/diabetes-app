@@ -249,6 +249,63 @@
  scrollbar-color: #475569 transparent;
 }
 
+/* ─── LANDSCAPE SUPPORT ─── */
+@media (orientation: landscape) and (max-height: 500px) {
+  body {
+    overflow-y: auto;
+  }
+
+  /* Reduce header height in landscape */
+  header .h-16 {
+    height: 3rem !important;
+  }
+
+  /* Remove bottom nav in landscape on small screens */
+  nav.md\:hidden {
+    display: none !important;
+  }
+
+  /* Remove bottom spacer */
+  .md\:hidden.h-16 {
+    display: none !important;
+  }
+
+  /* Make grids more horizontal in landscape */
+  .grid {
+    grid-auto-rows: min-content;
+  }
+
+  /* Reduce padding in landscape */
+  main.py-6 {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Real-time widget: horizontal layout */
+  .card-enter > .flex.items-center.justify-between {
+    flex-wrap: wrap;
+  }
+
+  /* Smaller cards in landscape */
+  .rounded-3xl.p-6 {
+    padding: 1rem !important;
+  }
+
+  /* Smaller text in landscape */
+  .text-2xl {
+    font-size: 1.125rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.25rem !important;
+  }
+
+  /* Reduce spacing between sections in landscape */
+  .space-y-6 {
+    margin-top: 0.75rem !important;
+  }
+}
+
 /* Smooth page transitions */
 .page-enter {
  animation: fadeInUp 0.4s ease-out;
@@ -260,6 +317,13 @@
  background-size: 200% 100%;
  animation: shimmer 1.5s infinite;
  border-radius: 8px;
+}
+
+/* Prevent text selection during skeleton loading */
+.skeleton-block *,
+.skeleton-block {
+ user-select: none;
+ pointer-events: none;
 }
 
 /* Remove number input arrows */

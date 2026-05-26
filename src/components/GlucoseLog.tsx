@@ -1,7 +1,8 @@
 import type { GlucoseEntry } from '../types';
 import { mealLabels } from '../types';
 import { getGlucoseStatus, formatDate, formatTime, deleteEntry } from '../utils/helpers';
-import { Trash2, Syringe, Apple, Clock, CalendarDays } from 'lucide-react';
+import { Trash2, Syringe, Apple, Clock, Activity } from 'lucide-react';
+import EmptyState from './EmptyState';
 
 interface GlucoseLogProps {
  entries: GlucoseEntry[];
@@ -20,17 +21,16 @@ export default function GlucoseLog({ entries, onEntryDeleted }: GlucoseLogProps)
  const handleDelete = (id: string) => {
  const updated = deleteEntry(id);
  onEntryDeleted(updated);
- };
-
- if (entries.length === 0) {
- return (
- <div className="text-center py-10">
- <CalendarDays className="w-12 h-12 text-gray-300 text-gray-400 mx-auto mb-3"/>
- <p className="text-gray-400 font-medium">No hay mediciones registradas</p>
- <p className="text-gray-300 text-gray-400 text-sm mt-1">Comienza registrando tu primera medición</p>
- </div>
- );
- }
+ };  if (entries.length === 0) {
+    return (
+      <EmptyState
+        icon={Activity}
+        title="No hay mediciones registradas"
+        description="Comienza registrando tu primera medición de glucosa para ver tu historial completo."
+        emoji="🩸"
+      />
+    );
+  }
 
  // Group entries by date
  const grouped = entries.reduce<Record<string, GlucoseEntry[]>>((acc, entry) => {

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut, DownloadCloud, UploadCloud } from 'lucide-react';
+import SkeletonLoader from './SkeletonLoader';
 import ConfirmModal from './ConfirmModal';
 import type { UserProfile, HealthAssessment, Gender, ActivityLevel, DiabetesType } from '../types';
 import { genderLabels, activityLabels, diabetesTypeLabels } from '../types';
@@ -199,23 +200,18 @@ export default function UserProfileSection() {
  setCloudError(`Error al subir: ${err?.message || 'No se pudo conectar con Firebase.'}`);
  return false;
  }
- }, [user?.uid, firebaseReady, profile]);
+ }, [user?.uid, firebaseReady, profile]);  // ─── LOADING (mientras se sincroniza desde la nube) ───
 
- // ─── LOADING (mientras se sincroniza desde la nube) ───
-
- if (!initialSyncDone) {
- return (
- <div className="max-w-2xl mx-auto">
- <div className="bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-700">
- <div className="flex flex-col items-center justify-center py-16">
- <RefreshCw className="w-10 h-10 text-blue-400 animate-spin mb-4"/>
- <p className="text-base font-semibold text-gray-400">Cargando tu perfil...</p>
- <p className="text-sm text-gray-400 text-gray-400 mt-1">Sincronizando desde la nube</p>
- </div>
- </div>
- </div>
- );
- }
+  if (!initialSyncDone) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-6 animate-[fadeIn_0.3s_ease-out]">
+        <SkeletonLoader variant="profile-header" />
+        <SkeletonLoader variant="stats-grid" />
+        <SkeletonLoader variant="card" count={4} />
+        <SkeletonLoader variant="form" />
+      </div>
+    );
+  }
 
  // ─── FORMULARIO ───
 

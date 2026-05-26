@@ -219,7 +219,7 @@ export default function NotificationsPage() {
  <div className="text-center">
  <div className="flex items-center justify-center gap-3 mb-2">
  <BellRing className="w-7 h-7 text-blue-600"/>
- <h2 className="text-2xl font-extrabold text-gray-200 text-white">Centro de Notificaciones</h2>
+ <h2 className="text-2xl font-extrabold text-white">Centro de Notificaciones</h2>
  </div>
  <p className="text-gray-400 text-gray-400 text-sm">
  Historial de todas las notificaciones recibidas
@@ -233,7 +233,7 @@ export default function NotificationsPage() {
  <BellRing className="w-4 h-4 text-blue-500"/>
  <span className="text-xs font-semibold text-gray-400 text-gray-500">Total</span>
  </div>
- <p className="text-2xl font-extrabold text-gray-200 text-white">{stats.total}</p>
+ <p className="text-2xl font-extrabold text-white">{stats.total}</p>
  </div>
  <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700 shadow-sm">
  <div className="flex items-center gap-2 mb-1">
@@ -285,7 +285,7 @@ export default function NotificationsPage() {
  <div className="flex items-center justify-between">
  <div className="flex items-center gap-2">
  <CalendarDays className="w-5 h-5 text-blue-500"/>
- <h3 className="font-bold text-gray-200 text-white">Últimos 7 días</h3>
+ <h3 className="font-bold text-white">Últimos 7 días</h3>
  </div>
  <span className={`text-xs font-semibold flex items-center gap-1 ${
  weeklyStats.trend === 'up' ? 'text-red-500' :
@@ -327,15 +327,15 @@ export default function NotificationsPage() {
  {/* Stats row */}
  <div className="grid grid-cols-3 gap-3 pt-2 border-t border-gray-700">
  <div className="text-center">
- <p className="text-lg font-extrabold text-gray-200 text-white">{weeklyStats.totalWeek}</p>
+ <p className="text-lg font-extrabold text-white">{weeklyStats.totalWeek}</p>
  <p className="text-[10px] text-gray-400 text-gray-500">Total semanal</p>
  </div>
  <div className="text-center">
- <p className="text-lg font-extrabold text-gray-200 text-white">{weeklyStats.dailyAverage}</p>
+ <p className="text-lg font-extrabold text-white">{weeklyStats.dailyAverage}</p>
  <p className="text-[10px] text-gray-400 text-gray-500">Promedio diario</p>
  </div>
  <div className="text-center">
- <p className="text-lg font-extrabold text-gray-200 text-white">
+ <p className="text-lg font-extrabold text-white">
  {weeklyStats.busiestDay.name.startsWith('D') && weeklyStats.busiestDay.name.length > 3
  ? weeklyStats.busiestDay.name.slice(0, 3)
  : weeklyStats.busiestDay.name}
@@ -365,7 +365,7 @@ export default function NotificationsPage() {
  value={search}
  onChange={e => setSearch(e.target.value)}
  placeholder="Buscar notificaciones..."
- className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white text-sm focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white text-sm focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
  <button
@@ -409,7 +409,7 @@ export default function NotificationsPage() {
  <div className="space-y-2">
  {filtered.length === 0 ? (
  <div className="text-center py-12">
- <BellRing className="w-16 h-16 text-gray-200 text-gray-400 mx-auto mb-4"/>
+ <BellRing className="w-16 h-16 text-gray-100 text-gray-400 mx-auto mb-4"/>
  <p className="text-gray-400 text-gray-400 font-medium text-sm">
  {search || typeFilter !== 'all' ? 'Sin resultados con los filtros actuales' : 'No hay notificaciones aún'}
  </p>
@@ -518,7 +518,7 @@ export default function NotificationsPage() {
 
  {/* Title */}
  <div>
- <h3 className="text-xl font-extrabold text-gray-200 text-white">{selectedNotif.title}</h3>
+ <h3 className="text-xl font-extrabold text-white">{selectedNotif.title}</h3>
  {selectedNotif.body && (
  <p className="text-sm text-gray-400 mt-2 leading-relaxed">{selectedNotif.body}</p>
  )}
@@ -557,7 +557,7 @@ export default function NotificationsPage() {
  <div className="flex gap-3">
  <button
  onClick={() => handleToggleRead(selectedNotif.id)}
- className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-700 text-gray-400 text-gray-300 font-semibold hover:bg-gray-200 hover:bg-gray-600 transition-all active:scale-[0.98]"
+ className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-700 text-gray-300 font-semibold hover:bg-gray-200 hover:bg-gray-600 transition-all active:scale-[0.98]"
  >
  {selectedNotif.read ? <EyeOff className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
  {selectedNotif.read ? 'Marcar no leída' : 'Marcar leída'}

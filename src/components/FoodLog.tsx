@@ -43,7 +43,7 @@ export default function FoodLog() {
  <div>
  <div className="flex items-center gap-3 mb-1">
  <UtensilsCrossed className="w-6 h-6 text-orange-500"/>
- <h2 className="text-2xl font-extrabold text-gray-200 text-white">Registro de Comidas</h2>
+ <h2 className="text-2xl font-extrabold text-white">Registro de Comidas</h2>
  </div>
  <p className="text-sm text-gray-400 text-gray-500">
  Lleva el control de lo que realmente comes
@@ -51,7 +51,7 @@ export default function FoodLog() {
  </div>
  <button
  onClick={() => setShowForm(!showForm)}
- className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:from-orange-600 hover:to-red-600 shadow-lg shadow-orange-200 shadow-orange-900/50 transition-all active:scale-95"
+ className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:from-orange-600 hover:to-red-600 shadow-lg shadow-orange-900/50 transition-all active:scale-95"
  >
  <Plus className="w-4 h-4"/>
  Registrar comida
@@ -68,7 +68,7 @@ export default function FoodLog() {
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
  <div className="bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700">
  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Comidas esta semana</p>
- <p className="text-2xl font-extrabold text-gray-200 text-white mt-1">{stats.totalMeals}</p>
+ <p className="text-2xl font-extrabold text-white mt-1">{stats.totalMeals}</p>
  </div>
  <div className="bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700">
  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Carbohidratos totales</p>
@@ -76,7 +76,7 @@ export default function FoodLog() {
  </div>
  <div className="bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700">
  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Promedio por comida</p>
- <p className="text-2xl font-extrabold text-gray-200 text-white mt-1">{stats.averageCarbsPerMeal}g</p>
+ <p className="text-2xl font-extrabold text-white mt-1">{stats.averageCarbsPerMeal}g</p>
  </div>
  <div className="bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700">
  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Días con registro</p>
@@ -95,15 +95,15 @@ export default function FoodLog() {
  value={searchQuery}
  onChange={e => setSearchQuery(e.target.value)}
  placeholder="Buscar en tu registro de comidas..."
- className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-700 border-gray-600 bg-gray-800 text-white focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none transition-all text-sm"
+ className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-700 border-gray-600 bg-gray-800 text-white focus:border-orange-500 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm"
  />
  </div>
 
  {/* Lista de comidas */}
  {filtered.length === 0 ? (
  <div className="bg-gray-800 rounded-2xl p-12 shadow-sm border border-gray-700 text-center">
- <UtensilsCrossed className="w-12 h-12 text-gray-200 text-gray-400 mx-auto mb-3"/>
- <h3 className="text-base font-bold text-gray-200 text-white mb-1">
+ <UtensilsCrossed className="w-12 h-12 text-gray-100 text-gray-400 mx-auto mb-3"/>
+ <h3 className="text-base font-bold text-white mb-1">
  {searchQuery ? 'Sin resultados' : 'No hay comidas registradas'}
  </h3>
  <p className="text-sm text-gray-400 text-gray-400 max-w-xs mx-auto">
@@ -186,7 +186,7 @@ function FoodForm({ onSubmit, onCancel }: {
 
  {/* Foods description */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5">
  ¿Qué comiste?
  </label>
  <textarea
@@ -194,7 +194,7 @@ function FoodForm({ onSubmit, onCancel }: {
  onChange={e => setFoods(e.target.value)}
  placeholder="Ej: Pechuga de pollo con ensalada, arroz integral y frijoles"
  rows={3}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none transition-all text-sm resize-none"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm resize-none"
  required
  />
  </div>
@@ -211,7 +211,7 @@ function FoodForm({ onSubmit, onCancel }: {
  value={carbs}
  onChange={e => setCarbs(e.target.value)}
  placeholder="45"
- className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none transition-all text-sm"
+ className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-orange-500 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm"
  />
  </div>
  <div>
@@ -224,7 +224,7 @@ function FoodForm({ onSubmit, onCancel }: {
  value={calories}
  onChange={e => setCalories(e.target.value)}
  placeholder="450"
- className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none transition-all text-sm"
+ className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-orange-500 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm"
  />
  </div>
  </div>
@@ -253,7 +253,7 @@ function FoodForm({ onSubmit, onCancel }: {
  value={glucoseBefore}
  onChange={e => setGlucoseBefore(e.target.value)}
  placeholder="120"
- className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-sm"
+ className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
  />
  </div>
  <div>
@@ -266,7 +266,7 @@ function FoodForm({ onSubmit, onCancel }: {
  value={glucoseAfter}
  onChange={e => setGlucoseAfter(e.target.value)}
  placeholder="140"
- className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-sm"
+ className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
  />
  </div>
  </div>
@@ -281,7 +281,7 @@ function FoodForm({ onSubmit, onCancel }: {
  value={notes}
  onChange={e => setNotes(e.target.value)}
  placeholder="¿Cómo te sientes? ¿Alguna observación?"
- className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-sm"
+ className="w-full px-3 py-2.5 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
  />
  </div>
  </div>
@@ -298,7 +298,7 @@ function FoodForm({ onSubmit, onCancel }: {
  </button>
  <button
  type="submit"
- className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:from-orange-600 hover:to-red-600 transition-all active:scale-95 text-sm shadow-lg shadow-orange-200 shadow-orange-900/50"
+ className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:from-orange-600 hover:to-red-600 transition-all active:scale-95 text-sm shadow-lg shadow-orange-900/50"
  >
  Guardar registro
  </button>
@@ -338,7 +338,7 @@ function FoodLogCard({ entry, onDelete }: { entry: FoodLogEntry; onDelete: (id: 
  {formatDate(entry.date)} • {formatTime(entry.createdAt)}
  </span>
  </div>
- <p className="text-sm font-semibold text-gray-200 text-white mt-1">
+ <p className="text-sm font-semibold text-white mt-1">
  {entry.foods}
  </p>
 

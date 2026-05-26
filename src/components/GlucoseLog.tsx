@@ -70,7 +70,7 @@ export default function GlucoseLog({ entries, onEntryDeleted }: GlucoseLogProps)
 
  <div>
  <div className="flex items-center gap-2">
- <span className="text-lg font-bold text-gray-200 text-white">
+ <span className="text-lg font-bold text-white">
  {entry.value} mg/dL
  </span>
  <span className={`text-sm ${status.color}`}>

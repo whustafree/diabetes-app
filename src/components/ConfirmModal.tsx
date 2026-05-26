@@ -55,7 +55,7 @@ export default function ConfirmModal({
  {customIcon || <Icon className={`w-5 h-5 ${iconColor}`} />}
  </div>
  <div>
- <h3 className="text-lg font-bold text-gray-200 text-white">{title}</h3>
+ <h3 className="text-lg font-bold text-white">{title}</h3>
  <p className="text-xs text-gray-400 text-gray-500">{description}</p>
  </div>
  </div>
@@ -75,7 +75,7 @@ export default function ConfirmModal({
  <button
  onClick={onClose}
  disabled={loading}
- className="flex-1 py-3 rounded-xl bg-gray-700 text-gray-400 text-gray-300 font-semibold hover:bg-gray-200 hover:bg-gray-600 disabled:opacity-50 transition-all"
+ className="flex-1 py-3 rounded-xl bg-gray-700 text-gray-300 font-semibold hover:bg-gray-200 hover:bg-gray-600 disabled:opacity-50 transition-all"
  >
  {cancelLabel}
  </button>

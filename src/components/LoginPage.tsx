@@ -84,7 +84,7 @@ export default function LoginPage() {
  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-900/50">
  <Activity className="w-5 h-5 text-white"/>
  </div>
- <h1 className="text-base font-extrabold text-gray-200 text-white">Diabetes Control</h1>
+ <h1 className="text-base font-extrabold text-white">Diabetes Control</h1>
  </div>
 
  </div>
@@ -97,7 +97,7 @@ export default function LoginPage() {
  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 flex items-center justify-center mx-auto mb-5 shadow-2xl shadow-blue-900/50">
  <Activity className="w-10 h-10 text-white"/>
  </div>
- <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-200 text-white leading-tight">
+ <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
  {mode === 'login' ? 'Bienvenido de nuevo' : mode === 'register' ? 'Crea tu cuenta' : 'Recuperar acceso'}
  </h2>
  <p className="text-sm text-gray-400 text-gray-400 mt-2 max-w-xs mx-auto">
@@ -131,7 +131,7 @@ export default function LoginPage() {
  /* ─── RESET PASSWORD ─── */
  <div className="space-y-5">
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Mail className="w-4 h-4"/> Correo Electrónico
  </label>
  <input
@@ -139,7 +139,7 @@ export default function LoginPage() {
  value={email}
  onChange={e => setEmail(e.target.value)}
  placeholder="tu@correo.com"
- className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>
@@ -170,7 +170,7 @@ export default function LoginPage() {
  <form onSubmit={handleSubmit} className="space-y-4">
  {mode === 'register' && (
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <User className="w-4 h-4"/> Nombre
  </label>
  <input
@@ -178,14 +178,14 @@ export default function LoginPage() {
  value={name}
  onChange={e => setName(e.target.value)}
  placeholder="Tu nombre completo"
- className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>
  )}
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Mail className="w-4 h-4"/> Correo Electrónico
  </label>
  <input
@@ -193,13 +193,13 @@ export default function LoginPage() {
  value={email}
  onChange={e => setEmail(e.target.value)}
  placeholder="tu@correo.com"
- className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/> Contraseña
  </label>
  <div className="relative">
@@ -209,7 +209,7 @@ export default function LoginPage() {
  onChange={e => setPassword(e.target.value)}
  placeholder="Mínimo 6 caracteres"
  minLength={6}
- className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all pr-12"
+ className="w-full px-4 py-3.5 rounded-2xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all pr-12"
  required
  />
  <button
@@ -306,7 +306,7 @@ export default function LoginPage() {
  {showSuccessAnimation && (
  <div className="fixed inset-0 z-[60] flex items-center justify-center bg-gradient-to-br from-blue-600/90 via-indigo-600/90 to-purple-700/90 backdrop-blur-md animate-[fadeIn_0.3s_ease-out]">
  <div className="text-center animate-[scaleIn_0.5s_ease-out]">
- <div className="w-24 h-24 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-6 shadow-2xl">
+ <div className="w-24 h-24 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center mx-auto mb-6 shadow-2xl">
  <CheckCircle className="w-12 h-12 text-white animate-[bounceIn_0.6s_ease-out]"/>
  </div>
  <h2 className="text-3xl font-extrabold text-white mb-2">
@@ -319,7 +319,7 @@ export default function LoginPage() {
  {[0, 1, 2].map(i => (
  <div
  key={i}
- className="w-2 h-2 rounded-full bg-white/60 animate-bounce"
+ className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
  style={{ animationDelay: `${i * 0.15}s` }}
  />
  ))}
@@ -365,7 +365,7 @@ function GoogleLoginButton() {
  <button
  onClick={handleClick}
  disabled={loading}
- className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border-2 border-gray-700 border-gray-600 text-gray-300 text-gray-200 font-semibold hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
+ className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border-2 border-gray-700 border-gray-600 text-gray-300 text-gray-100 font-semibold hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
  >
  <Chrome className="w-5 h-5 text-blue-500"/>
  {loading ? 'Conectando...' : 'Continuar con Google'}
@@ -399,7 +399,7 @@ function DemoModeCard() {
  <button
  onClick={handleClick}
  disabled={loading}
- className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-gray-600 to-slate-600 text-white font-semibold hover:from-gray-700 hover:to-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] shadow-lg shadow-gray-200 shadow-gray-900/50"
+ className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-gray-600 to-slate-600 text-white font-semibold hover:from-gray-700 hover:to-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] shadow-lg shadow-gray-900/50"
  >
  <Activity className="w-5 h-5"/>
  {loading ? 'Iniciando...' : 'Explorar en modo Demo'}

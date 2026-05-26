@@ -239,7 +239,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  <div className="flex flex-col items-end gap-2 flex-shrink-0">
  {/* Cloud sync status */}
  {cloudStatus !== 'idle' && (
- <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-xl px-3 py-1.5">
+ <div className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm rounded-xl px-3 py-1.5">
  {cloudStatus === 'syncing' && <RefreshCw className="w-3 h-3 text-blue-200 animate-spin"/>}
  {cloudStatus === 'synced' && <Cloud className="w-3 h-3 text-green-300"/>}
  {cloudStatus === 'offline' && <CloudOff className="w-3 h-3 text-gray-300"/>}
@@ -252,7 +252,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {!profile && (
  <button
  onClick={() => onNavigate?.('profile')}
- className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm hover:bg-white/25 rounded-xl px-4 py-2 text-xs font-semibold transition-all active:scale-95"
+ className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm hover:bg-white/25 rounded-xl px-4 py-2 text-xs font-semibold transition-all active:scale-95"
  >
  <UserPlus className="w-4 h-4"/>
  Crear mi perfil
@@ -264,22 +264,22 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {/* Quick stats row */}
  {assessment && (
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 card-enter">
- <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+ <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3">
  <p className="text-[10px] font-semibold text-blue-200 uppercase tracking-wider">IMC</p>
  <p className="text-lg font-bold mt-0.5">{assessment.bmi}</p>
  <p className="text-[10px] text-blue-200/80">{bmiCategoryLabels[assessment.bmiCategory]}</p>
  </div>
- <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+ <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3">
  <p className="text-[10px] font-semibold text-blue-200 uppercase tracking-wider">Grasa Corporal</p>
  <p className="text-lg font-bold mt-0.5">{assessment.bodyFatPercentage}%</p>
  <p className="text-[10px] text-blue-200/80">{assessment.bodyFatCategory}</p>
  </div>
- <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+ <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3">
  <p className="text-[10px] font-semibold text-blue-200 uppercase tracking-wider">Metabolismo</p>
  <p className="text-lg font-bold mt-0.5">{assessment.tdee}</p>
  <p className="text-[10px] text-blue-200/80">kcal/día</p>
  </div>
- <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+ <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3">
  <p className="text-[10px] font-semibold text-blue-200 uppercase tracking-wider">Riesgo</p>
  <p className={`text-lg font-bold mt-0.5 ${assessment.riskLevel === 'bajo' ? 'text-green-300' : assessment.riskLevel === 'moderado' ? 'text-yellow-300' : 'text-red-300'}`}>
  {riskLevelLabels[assessment.riskLevel]}
@@ -304,7 +304,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {!profile && (
  <div className="card-enter bg-gradient-to-r from-blue-50 to-indigo-50 from-blue-900/20 to-indigo-900/20 rounded-2xl p-6 border border-blue-100 border-blue-800/50 text-center">
  <Sparkles className="w-10 h-10 text-blue-400 mx-auto mb-3"/>
- <h2 className="text-lg font-bold text-gray-200 text-white mb-2">
+ <h2 className="text-lg font-bold text-white mb-2">
  Personaliza tu experiencia
  </h2>
  <p className="text-sm text-gray-400 max-w-md mx-auto mb-4">
@@ -326,7 +326,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {/* Upcoming Medications */}
  <div className="card-enter card-hover bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-3">
- <h3 className="text-sm font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-sm font-bold text-white flex items-center gap-2">
  <Pill className="w-4 h-4 text-emerald-500"/>
  Próximas dosis
  </h3>
@@ -376,7 +376,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  )}
  </div>
  <div className="flex-1 min-w-0">
- <p className="text-xs font-bold text-gray-300 text-gray-200 truncate">{med.name}</p>
+ <p className="text-xs font-bold text-gray-300 text-gray-100 truncate">{med.name}</p>
  <p className="text-[10px] text-gray-400 text-gray-500">{med.dosage}</p>
  </div>
  <div className="text-right flex-shrink-0">
@@ -400,7 +400,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {/* Today's Reminders */}
  <div className="card-enter card-hover bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-3">
- <h3 className="text-sm font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-sm font-bold text-white flex items-center gap-2">
  <Bell className="w-4 h-4 text-purple-500"/>
  Recordatorios de hoy
  </h3>
@@ -468,7 +468,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {/* ─── GLUCOSE SECTION ─── */}
  <div className="card-enter bg-gray-800 rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-4">
- <h3 className="text-base font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-base font-bold text-white flex items-center gap-2">
  <Activity className="w-5 h-5 text-blue-500"/>
  Monitoreo de Glucosa
  </h3>
@@ -519,7 +519,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  </div>
  ) : (
  <div className="mt-4">
- <h4 className="text-sm font-bold text-gray-200 text-white mb-3 flex items-center gap-2">
+ <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
  <History className="w-4 h-4 text-blue-500"/>
  Historial de Mediciones
  </h4>
@@ -532,7 +532,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
  {assessment && profile && (
  <div className="card-enter card-hover bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-3">
- <h3 className="text-sm font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-sm font-bold text-white flex items-center gap-2">
  <Target className="w-4 h-4 text-green-500"/>
  Tus metas de salud
  </h3>
@@ -656,7 +656,7 @@ function MonthlyComparisonCard({ entries }: { entries: GlucoseEntry[] }) {
  return (
  <div className="card-hover bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-4">
- <h3 className="text-sm font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-sm font-bold text-white flex items-center gap-2">
  <BarChart3 className="w-5 h-5 text-indigo-500"/>
  Comparativa Mensual
  </h3>
@@ -684,7 +684,7 @@ function MonthlyComparisonCard({ entries }: { entries: GlucoseEntry[] }) {
 
  {/* Previous month */}
  <div className="flex items-center gap-2">
- <div className="w-2.5 h-2.5 rounded-sm bg-gray-300 bg-gray-600 flex-shrink-0"/>
+ <div className="w-2.5 h-2.5 rounded-sm bg-gray-600 flex-shrink-0"/>
  <span className="text-xs font-bold text-gray-400">{monthNames[prevMonth]}</span>
  </div>
  <div className="text-center">
@@ -785,7 +785,7 @@ function HealthScoreCard({ score, trend }: {
  {/* Details */}
  <div className="flex-1 min-w-0">
  <div className="flex items-center gap-2 mb-1">
- <h3 className="text-sm font-bold text-gray-200 text-white">Puntaje de Salud</h3>
+ <h3 className="text-sm font-bold text-white">Puntaje de Salud</h3>
  <span className={`text-xs font-bold ${trendColor}`}>
  {trendArrow} {score.details.trend === 'mejorando' ? 'Mejorando' : score.details.trend === 'empeorando' ? 'Empeorando' : 'Estable'}
  </span>

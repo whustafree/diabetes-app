@@ -17,7 +17,7 @@ export default function StatsCard({ stats, lastValue }: StatsCardProps) {
  sub: status.label,
  icon: Activity,
  color: status.color,
- bg: 'bg-gray-800',
+ bg: 'bg-gray-700',
  },
  {
  label: 'Promedio (7 días)',
@@ -25,7 +25,7 @@ export default function StatsCard({ stats, lastValue }: StatsCardProps) {
  sub: `${stats.entries} mediciones`,
  icon: TrendingDown,
  color: getGlucoseStatus(stats.average).color,
- bg: 'bg-gray-800',
+ bg: 'bg-gray-700',
  },
  {
  label: 'Mínimo',
@@ -33,7 +33,7 @@ export default function StatsCard({ stats, lastValue }: StatsCardProps) {
  sub: '',
  icon: TrendingDown,
  color: 'text-blue-500',
- bg: 'bg-white',
+ bg: 'bg-gray-700',
  },
  {
  label: 'Máximo',
@@ -41,7 +41,7 @@ export default function StatsCard({ stats, lastValue }: StatsCardProps) {
  sub: '',
  icon: TrendingUp,
  color: 'text-orange-500',
- bg: 'bg-gray-800',
+ bg: 'bg-gray-700',
  },
  ];
 
@@ -55,14 +55,14 @@ export default function StatsCard({ stats, lastValue }: StatsCardProps) {
  className={`${card.bg} rounded-2xl p-5 shadow-sm border border-gray-700 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5`}
  >
  <div className="flex items-start justify-between mb-3">
- <span className="text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">
+ <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
  {card.label}
  </span>
  <Icon className={`w-5 h-5 ${card.color}`} />
  </div>
  <div className={`text-2xl font-bold ${card.color}`}>{card.value}</div>
  {card.sub && (
- <p className="text-xs text-gray-400 text-gray-400 mt-1 font-medium">{card.sub}</p>
+ <p className="text-xs text-gray-400 mt-1 font-medium">{card.sub}</p>
  )}
  </div>
  );

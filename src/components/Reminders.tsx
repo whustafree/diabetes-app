@@ -336,7 +336,7 @@ export default function Reminders() {
  <div className="text-center">
  <div className="flex items-center justify-center gap-3 mb-2">
  <Bell className="w-7 h-7 text-purple-600"/>
- <h2 className="text-2xl font-extrabold text-gray-200 text-white">Recordatorios</h2>
+ <h2 className="text-2xl font-extrabold text-white">Recordatorios</h2>
  </div>
  <p className="text-gray-400 text-gray-400 text-sm">Nunca olvides medir tu glucosa o tomar tus medicamentos</p>
 
@@ -382,7 +382,7 @@ export default function Reminders() {
  }
  </div>
  <div className="flex-1">
- <p className="text-sm font-semibold text-gray-200 text-white">
+ <p className="text-sm font-semibold text-white">
  {pushEnabled ? 'Notificaciones push activadas' : 'Notificaciones push'}
  </p>
  <p className="text-xs text-gray-400 mt-0.5">
@@ -441,8 +441,8 @@ export default function Reminders() {
  onClick={() => setIsAdding(!isAdding)}
  className={`w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl font-semibold transition-all duration-200 ${
  isAdding
- ? 'bg-gray-700 text-gray-400 text-gray-300'
- : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-200 shadow-purple-900/50 hover:shadow-xl active:scale-[0.98]'
+ ? 'bg-gray-700 text-gray-300'
+ : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-900/50 hover:shadow-xl active:scale-[0.98]'
  }`}
  >
  <PlusCircle className="w-5 h-5"/>
@@ -452,7 +452,7 @@ export default function Reminders() {
  {/* Add Form */}
  {isAdding && (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700 space-y-4">
- <h3 className="font-bold text-gray-200 text-white">Nuevo Recordatorio</h3>
+ <h3 className="font-bold text-white">Nuevo Recordatorio</h3>
 
  {/* Type selector */}
  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -476,7 +476,7 @@ export default function Reminders() {
  value={newTitle}
  onChange={e => setNewTitle(e.target.value)}
  placeholder="Título del recordatorio"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
  />
 
  <input
@@ -484,7 +484,7 @@ export default function Reminders() {
  value={newDesc}
  onChange={e => setNewDesc(e.target.value)}
  placeholder="Descripción (opcional)"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
  />
 
  <div className="flex items-center gap-4">
@@ -494,7 +494,7 @@ export default function Reminders() {
  type="time"
  value={newTime}
  onChange={e => setNewTime(e.target.value)}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
  />
  </div>
  </div>

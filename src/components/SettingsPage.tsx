@@ -256,7 +256,7 @@ export default function SettingsPage() {
  <User className="w-5 h-5 text-blue-400"/>
  </div>
  <div>
- <h2 className="text-xl font-bold text-gray-200 text-white">Configuración de cuenta</h2>
+ <h2 className="text-xl font-bold text-white">Configuración de cuenta</h2>
  <p className="text-sm text-gray-400 text-gray-500">
  Administra tu cuenta, seguridad y actividad
  </p>
@@ -279,7 +279,7 @@ export default function SettingsPage() {
  onClick={() => setActiveTab(tab.id)}
  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
  isActive
- ? 'bg-gray-700 text-gray-200 text-white shadow-sm'
+ ? 'bg-gray-700 text-white shadow-sm'
  : 'text-gray-400 hover:text-gray-400 hover:text-gray-200'
  }`}
  >
@@ -295,26 +295,26 @@ export default function SettingsPage() {
  <>
  {/* Información de la cuenta */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <User className="w-5 h-5 text-blue-500"/>
  Información de la cuenta
  </h3>
  <div className="space-y-4">
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50 border border-gray-700 border-gray-600">
+ <div className="p-4 rounded-xl bg-gray-700/50 border border-gray-700 border-gray-600">
  <p className="text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider mb-1">Correo electrónico</p>
- <p className="text-sm font-medium text-gray-200 text-white flex items-center gap-2">
+ <p className="text-sm font-medium text-white flex items-center gap-2">
  <Mail className="w-4 h-4 text-gray-400"/>
  {user?.email || '—'}
  </p>
  </div>
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50 border border-gray-700 border-gray-600">
+ <div className="p-4 rounded-xl bg-gray-700/50 border border-gray-700 border-gray-600">
  <p className="text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider mb-1">Nombre</p>
- <p className="text-sm font-medium text-gray-200 text-white flex items-center gap-2">
+ <p className="text-sm font-medium text-white flex items-center gap-2">
  <User className="w-4 h-4 text-gray-400"/>
  {user?.displayName || '—'}
  </p>
  </div>
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50 border border-gray-700 border-gray-600">
+ <div className="p-4 rounded-xl bg-gray-700/50 border border-gray-700 border-gray-600">
  <p className="text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider mb-1">UID (ID de usuario)</p>
  <p className="text-xs font-mono text-gray-400 break-all">{user?.uid}</p>
  </div>
@@ -323,7 +323,7 @@ export default function SettingsPage() {
 
  {/* Rol de usuario */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Shield className="w-5 h-5 text-indigo-500"/>
  Rol de usuario
  </h3>
@@ -360,7 +360,7 @@ export default function SettingsPage() {
 
  {/* Exportar Datos */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-2 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
  <Download className="w-5 h-5 text-blue-500"/>
  Exportar Datos
  </h3>
@@ -369,7 +369,7 @@ export default function SettingsPage() {
  estadísticas, health score y registro de comidas.
  </p>
  {exportStats.length > 0 && (
- <div className="mb-4 p-3 rounded-xl bg-gray-700 bg-gray-700/50 border border-gray-700 border-gray-600">
+ <div className="mb-4 p-3 rounded-xl bg-gray-700/50 border border-gray-700 border-gray-600">
  <p className="text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider mb-2">Datos incluidos</p>
  <div className="flex flex-wrap gap-1.5">
  {exportStats.map(s => (
@@ -402,7 +402,7 @@ export default function SettingsPage() {
 
  {/* Preferencias de Notificaciones */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-2 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
  <Bell className="w-5 h-5 text-purple-500"/>
  Tipos de Notificación
  </h3>
@@ -411,12 +411,12 @@ export default function SettingsPage() {
  </p>
 
  {/* Toggle all */}
- <div className="flex items-center justify-between p-3 rounded-xl bg-gray-700 bg-gray-700/50 border border-gray-700 border-gray-600 mb-3">
+ <div className="flex items-center justify-between p-3 rounded-xl bg-gray-700/50 border border-gray-700 border-gray-600 mb-3">
  <span className="text-sm font-semibold text-gray-300 text-gray-200">Todas las notificaciones</span>
  <button
  onClick={() => handleAllNotifsToggle(!allNotifs)}
  className={`relative w-12 h-6 rounded-full transition-all duration-300 ${
- allNotifs ? 'bg-purple-500' : 'bg-gray-300 bg-gray-600'
+ allNotifs ? 'bg-purple-500' : 'bg-gray-600'
  }`}
  >
  <div className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-gray-800 shadow transition-transform duration-300 ${allNotifs ? 'translate-x-6' : ''}`} />
@@ -436,7 +436,7 @@ export default function SettingsPage() {
  <button
  onClick={() => handleNotifToggle(key, !notifPrefs[key])}
  className={`relative w-11 h-6 rounded-full transition-all duration-300 flex-shrink-0 ${
- notifPrefs[key] ? 'bg-purple-500' : 'bg-gray-300 bg-gray-600'
+ notifPrefs[key] ? 'bg-purple-500' : 'bg-gray-600'
  }`}
  >
  <div className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-gray-800 shadow transition-transform duration-300 ${notifPrefs[key] ? 'translate-x-5' : ''}`} />
@@ -488,7 +488,7 @@ export default function SettingsPage() {
  {/* ─── TAB: SEGURIDAD ─── */}
  {activeTab === 'security' && (
  <div className="bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Lock className="w-5 h-5 text-blue-500"/>
  Cambiar Contraseña
  </h3>
@@ -516,7 +516,7 @@ export default function SettingsPage() {
 
  <div className="space-y-4">
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/>
  Contraseña actual
  </label>
@@ -526,7 +526,7 @@ export default function SettingsPage() {
  value={currentPassword}
  onChange={e => setCurrentPassword(e.target.value)}
  placeholder="••••••••"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all pr-12"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all pr-12"
  disabled={changingPassword}
  />
  <button
@@ -540,7 +540,7 @@ export default function SettingsPage() {
  </div>
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/>
  Nueva contraseña
  </label>
@@ -549,7 +549,7 @@ export default function SettingsPage() {
  value={newPassword}
  onChange={e => setNewPassword(e.target.value)}
  placeholder="Mínimo 6 caracteres"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  disabled={changingPassword}
  />
  {newPassword.length > 0 && (
@@ -580,7 +580,7 @@ export default function SettingsPage() {
  </div>
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/>
  Confirmar nueva contraseña
  </label>
@@ -589,7 +589,7 @@ export default function SettingsPage() {
  value={confirmPassword}
  onChange={e => setConfirmPassword(e.target.value)}
  placeholder="Repite la nueva contraseña"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  disabled={changingPassword}
  onKeyDown={e => e.key === 'Enter' && handleChangePassword()}
  />
@@ -620,7 +620,7 @@ export default function SettingsPage() {
  {activeTab === 'activity' && (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-4">
- <h3 className="text-lg font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white flex items-center gap-2">
  <History className="w-5 h-5 text-blue-500"/>
  Registro de Actividad
  </h3>
@@ -686,7 +686,7 @@ export default function SettingsPage() {
  {/* Lista de actividades */}
  {filteredLog.length === 0 ? (
  <div className="py-12 text-center">
- <History className="w-10 h-10 text-gray-200 text-gray-400 mx-auto mb-3"/>
+ <History className="w-10 h-10 text-gray-100 text-gray-400 mx-auto mb-3"/>
  <p className="text-sm text-gray-400 text-gray-400 font-medium">Sin actividad registrada</p>
  <p className="text-xs text-gray-300 text-gray-400 mt-1">
  Las acciones como inicio de sesión, cambio de contraseña y cierre de sesión aparecerán aquí.
@@ -703,7 +703,7 @@ export default function SettingsPage() {
  >
  <span className="text-lg mt-0.5 flex-shrink-0">{meta.icon}</span>
  <div className="flex-1 min-w-0">
- <p className="text-sm font-medium text-gray-200 text-white">{entry.label}</p>
+ <p className="text-sm font-medium text-white">{entry.label}</p>
  {entry.detail && (
  <p className="text-xs text-gray-400 text-gray-400 mt-0.5">{entry.detail}</p>
  )}
@@ -780,7 +780,7 @@ export default function SettingsPage() {
  </div>
  )}
  <div className="mb-4">
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/> Contraseña
  </label>
  <input
@@ -788,7 +788,7 @@ export default function SettingsPage() {
  value={deletePassword}
  onChange={e => setDeletePassword(e.target.value)}
  placeholder="Tu contraseña actual"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-red-400 focus:ring-2 focus:ring-red-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500 outline-none transition-all"
  disabled={deleting}
  onKeyDown={e => e.key === 'Enter' && handleDeleteAccount()}
  autoFocus

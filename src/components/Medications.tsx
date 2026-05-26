@@ -305,7 +305,7 @@ export default function Medications() {
  <div className="text-center">
  <div className="flex items-center justify-center gap-3 mb-2">
  <Pill className="w-7 h-7 text-emerald-600"/>
- <h2 className="text-2xl font-extrabold text-gray-200 text-white">Medicamentos</h2>
+ <h2 className="text-2xl font-extrabold text-white">Medicamentos</h2>
  </div>
  <p className="text-gray-400 text-gray-400 text-sm">Controla tus medicamentos y recibe alarmas para cada dosis</p>
 
@@ -405,8 +405,8 @@ export default function Medications() {
  onClick={() => { setIsAdding(!isAdding); if (!isAdding) resetForm(); }}
  className={`w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl font-semibold transition-all duration-200 ${
  isAdding
- ? 'bg-gray-700 text-gray-400 text-gray-300'
- : 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-200 shadow-emerald-900/50 hover:shadow-xl active:scale-[0.98]'
+ ? 'bg-gray-700 text-gray-300'
+ : 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/50 hover:shadow-xl active:scale-[0.98]'
  }`}
  >
  <PlusCircle className="w-5 h-5"/>
@@ -416,7 +416,7 @@ export default function Medications() {
  {/* Add Form */}
  {isAdding && (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700 space-y-4">
- <h3 className="font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="font-bold text-white flex items-center gap-2">
  <Pill className="w-5 h-5 text-emerald-500"/>
  Nuevo Medicamento
  </h3>
@@ -429,7 +429,7 @@ export default function Medications() {
  value={newName}
  onChange={e => setNewName(e.target.value)}
  placeholder="Ej: Metformina, Insulina..."
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
  />
  </div>
 
@@ -443,12 +443,12 @@ export default function Medications() {
  onChange={e => setNewDosageValue(e.target.value)}
  min="0"
  step="0.1"
- className="flex-1 px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+ className="flex-1 px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
  />
  <select
  value={newDosageUnit}
  onChange={e => setNewDosageUnit(e.target.value)}
- className="w-28 px-3 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-sm"
+ className="w-28 px-3 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm"
  >
  {DOSAGE_UNITS.map(unit => (
  <option key={unit} value={unit}>{unit}</option>
@@ -467,7 +467,7 @@ export default function Medications() {
  onChange={e => setNewFrequency(e.target.value)}
  min="1"
  max="24"
- className="w-24 px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all text-center"
+ className="w-24 px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-center"
  />
  <span className="text-sm font-medium text-gray-400">cada</span>
  <div className="flex gap-1.5">
@@ -495,7 +495,7 @@ export default function Medications() {
  type="time"
  value={newStartTime}
  onChange={e => setNewStartTime(e.target.value)}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
  />
  <p className="text-[10px] text-gray-400 text-gray-400 mt-1">
  Las siguientes dosis se calcularán automáticamente cada {newFrequency} horas
@@ -510,7 +510,7 @@ export default function Medications() {
  value={newNotes}
  onChange={e => setNewNotes(e.target.value)}
  placeholder="Ej: Tomar con comida, antes de dormir..."
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
  />
  </div>
 
@@ -654,15 +654,15 @@ export default function Medications() {
  <div className="mt-4 pt-4 border-t border-gray-700 grid grid-cols-2 sm:grid-cols-4 gap-3">
  <div className="bg-gray-50 bg-gray-700/50 rounded-xl p-3 text-center">
  <p className="text-[10px] font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">Dosis</p>
- <p className="text-sm font-bold text-gray-300 text-gray-200 mt-1">{med.dosage}</p>
+ <p className="text-sm font-bold text-gray-300 text-gray-100 mt-1">{med.dosage}</p>
  </div>
  <div className="bg-gray-50 bg-gray-700/50 rounded-xl p-3 text-center">
  <p className="text-[10px] font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">Frecuencia</p>
- <p className="text-sm font-bold text-gray-300 text-gray-200 mt-1">Cada {med.frequencyHours}h</p>
+ <p className="text-sm font-bold text-gray-300 text-gray-100 mt-1">Cada {med.frequencyHours}h</p>
  </div>
  <div className="bg-gray-50 bg-gray-700/50 rounded-xl p-3 text-center">
  <p className="text-[10px] font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">Inicio</p>
- <p className="text-sm font-bold text-gray-300 text-gray-200 mt-1">{med.startTime}</p>
+ <p className="text-sm font-bold text-gray-300 text-gray-100 mt-1">{med.startTime}</p>
  </div>
  <div className="bg-gray-50 bg-gray-700/50 rounded-xl p-3 text-center">
  <p className="text-[10px] font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">Próxima</p>
@@ -671,7 +671,7 @@ export default function Medications() {
  </p>
  </div>
  {/* Schedule grid */}
- <div className="col-span-2 sm:col-span-4 bg-gray-700 bg-gray-700/50 rounded-xl p-3">
+ <div className="col-span-2 sm:col-span-4 bg-gray-700/50 rounded-xl p-3">
  <p className="text-[10px] font-semibold text-gray-400 text-gray-400 uppercase tracking-wider mb-2">
  Horario de dosis siguientes
  </p>

@@ -27,7 +27,7 @@ export default function DietPlan() {
  return (
  <div className="max-w-lg mx-auto bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-700 text-center">
  <Scale className="w-12 h-12 text-gray-300 text-gray-400 mx-auto mb-4"/>
- <h2 className="text-xl font-bold text-gray-200 text-white mb-2">Plan de Dieta Personalizado</h2>
+ <h2 className="text-xl font-bold text-white mb-2">Plan de Dieta Personalizado</h2>
  <p className="text-gray-400 text-gray-400 text-sm mb-6">
  Para generar tu plan de dieta necesitas crear tu perfil primero.
  </p>
@@ -47,29 +47,29 @@ export default function DietPlan() {
  <div className="text-center">
  <div className="flex items-center justify-center gap-3 mb-2">
  <Scale className="w-7 h-7 text-emerald-600"/>
- <h2 className="text-2xl font-extrabold text-gray-200 text-white">Plan de Dieta</h2>
+ <h2 className="text-2xl font-extrabold text-white">Plan de Dieta</h2>
  </div>
  <p className="text-gray-400 text-gray-400 text-sm">Déficit calórico personalizado para pérdida de peso saludable</p>
  </div>
 
  {/* Current Status */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Target className="w-5 h-5 text-blue-500"/>
  Tu Situación Actual
  </h3>
  <div className="grid sm:grid-cols-3 gap-4">
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50">
+ <div className="p-4 rounded-xl bg-gray-700/50">
  <div className="text-xs font-semibold text-gray-400 text-gray-400 mb-1">Peso Actual</div>
- <div className="text-2xl font-bold text-gray-200 text-white">{profile.weight} <span className="text-sm font-normal text-gray-400 text-gray-500">kg</span></div>
+ <div className="text-2xl font-bold text-white">{profile.weight} <span className="text-sm font-normal text-gray-400 text-gray-500">kg</span></div>
  </div>
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50">
+ <div className="p-4 rounded-xl bg-gray-700/50">
  <div className="text-xs font-semibold text-gray-400 text-gray-400 mb-1">IMC</div>
- <div className="text-2xl font-bold text-gray-200 text-white">{healthData.bmi} <span className="text-sm font-normal text-gray-400 text-gray-500">- {bmiStatus}</span></div>
+ <div className="text-2xl font-bold text-white">{healthData.bmi} <span className="text-sm font-normal text-gray-400 text-gray-500">- {bmiStatus}</span></div>
  </div>
- <div className="p-4 rounded-xl bg-gray-700 bg-gray-700/50">
+ <div className="p-4 rounded-xl bg-gray-700/50">
  <div className="text-xs font-semibold text-gray-400 text-gray-400 mb-1">Gasto Calórico (TDEE)</div>
- <div className="text-2xl font-bold text-gray-200 text-white">{healthData.tdee} <span className="text-sm font-normal text-gray-400 text-gray-500">kcal/día</span></div>
+ <div className="text-2xl font-bold text-white">{healthData.tdee} <span className="text-sm font-normal text-gray-400 text-gray-500">kcal/día</span></div>
  </div>
  </div>
  {weightToLose > 0 && (
@@ -85,7 +85,7 @@ export default function DietPlan() {
 
  {/* Deficit Selector */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4">Nivel de Déficit Calórico</h3>
+ <h3 className="text-lg font-bold text-white mb-4">Nivel de Déficit Calórico</h3>
  <div className="grid grid-cols-3 gap-3">
  {[
  { value: 250 as const, label: 'Suave', desc: '-250 kcal/día', loss: '0.25 kg/sem', pace: 'Lento pero sostenible' },
@@ -98,7 +98,7 @@ export default function DietPlan() {
  className={`p-4 rounded-xl border-2 text-center transition-all ${
  deficitAmount === opt.value
  ? 'border-emerald-500 bg-emerald-900/30'
- : 'border-gray-100 border-gray-600 bg-gray-700 bg-gray-700/50 hover:border-gray-200 hover:border-gray-500'
+ : 'border-gray-100 border-gray-600 bg-gray-700/50 hover:border-gray-200 hover:border-gray-500'
  }`}
  >
  <div className={`text-sm font-bold ${deficitAmount === opt.value ? 'text-emerald-300' : 'text-gray-300'}`}>
@@ -119,7 +119,7 @@ export default function DietPlan() {
 
  {/* Recommended Plan */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Target className="w-5 h-5 text-emerald-500"/>
  Tu Plan Personalizado
  </h3>
@@ -186,7 +186,7 @@ export default function DietPlan() {
  onClick={() => setShowInfo(!showInfo)}
  className="flex items-center justify-between w-full"
  >
- <h3 className="text-lg font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white flex items-center gap-2">
  <Info className="w-5 h-5 text-blue-500"/>
  Recomendaciones y Consejos
  </h3>
@@ -195,9 +195,9 @@ export default function DietPlan() {
  {showInfo && (
  <div className="mt-4 space-y-2">
  {recommendation.notes.map((note, i) => (
- <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gray-700 bg-gray-700/50">
+ <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gray-700/50">
  <span className="text-blue-500 mt-0.5">💡</span>
- <p className="text-sm text-gray-400 text-gray-300">{note}</p>
+ <p className="text-sm text-gray-300">{note}</p>
  </div>
  ))}
  </div>
@@ -206,7 +206,7 @@ export default function DietPlan() {
 
  {/* Weekly Schedule */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Dumbbell className="w-5 h-5 text-orange-500"/>
  Rutina Semanal Recomendada
  </h3>
@@ -225,7 +225,7 @@ export default function DietPlan() {
  item.type === 'strength' ? 'border-blue-100 border-blue-900/30 bg-blue-900/20' :
  item.type === 'mixed' ? 'border-purple-100 border-purple-900/30 bg-purple-900/20' :
  item.type === 'fun' ? 'border-green-100 border-green-900/30 bg-green-900/20' :
- 'border-gray-100 border-gray-600 bg-gray-700 bg-gray-700/50'
+ 'border-gray-100 border-gray-600 bg-gray-700/50'
  }`}>
  <div className="flex items-center justify-between">
  <span className="text-sm font-bold text-gray-300">{item.day}</span>

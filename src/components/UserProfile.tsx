@@ -228,7 +228,7 @@ export default function UserProfileSection() {
  <User className="w-5 h-5 text-blue-400"/>
  </div>
  <div>
- <h2 className="text-xl font-bold text-gray-200 text-white">
+ <h2 className="text-xl font-bold text-white">
  {profile ? 'Editar Perfil' : 'Tu Perfil'}
  </h2>
  <p className="text-sm text-gray-400 text-gray-500">Completa tus datos para obtener evaluación de salud</p>
@@ -274,7 +274,7 @@ export default function UserProfileSection() {
  <div className="space-y-5">
  {/* Name */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <User className="w-4 h-4"/>
  Nombre
  </label>
@@ -283,14 +283,14 @@ export default function UserProfileSection() {
  value={form.name}
  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
  placeholder="Tu nombre"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
  <div className="grid grid-cols-2 gap-4">
  {/* Age */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Cake className="w-4 h-4"/>
  Edad
  </label>
@@ -300,13 +300,13 @@ export default function UserProfileSection() {
  onChange={e => setForm(f => ({ ...f, age: parseInt(e.target.value) || 0 }))}
  min={10}
  max={120}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
  {/* Gender */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <User className="w-4 h-4"/>
  Género
  </label>
@@ -319,7 +319,7 @@ export default function UserProfileSection() {
  className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all ${
  form.gender === key
  ? 'bg-blue-100 bg-blue-900/40 text-blue-300 ring-1 ring-blue-300'
- : 'bg-gray-50 bg-gray-700 text-gray-400 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
+ : 'bg-gray-50 bg-gray-700 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
  }`}
  >
  {label}
@@ -332,7 +332,7 @@ export default function UserProfileSection() {
  <div className="grid grid-cols-2 gap-4">
  {/* Weight */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Weight className="w-4 h-4"/>
  Peso (kg)
  </label>
@@ -343,13 +343,13 @@ export default function UserProfileSection() {
  min={20}
  max={300}
  step={0.1}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
  {/* Height */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Ruler className="w-4 h-4"/>
  Altura (cm)
  </label>
@@ -359,20 +359,20 @@ export default function UserProfileSection() {
  onChange={e => setForm(f => ({ ...f, height: parseFloat(e.target.value) || 0 }))}
  min={100}
  max={250}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
  </div>
 
  {/* Activity Level */}
- <div> <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <div> <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Activity className="w-4 h-4"/>
  Nivel de Actividad
  </label>
  <select
  value={form.activityLevel}
  onChange={e => setForm(f => ({ ...f, activityLevel: e.target.value as ActivityLevel }))}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all appearance-none"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all appearance-none"
  >
  {(Object.entries(activityLabels) as [ActivityLevel, string][]).map(([key, label]) => (
  <option key={key} value={key}>{label}</option>
@@ -381,7 +381,7 @@ export default function UserProfileSection() {
  </div>
 
  {/* Diabetes Type */}
- <div> <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <div> <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Heart className="w-4 h-4"/>
  Condición de Diabetes
  </label>
@@ -394,7 +394,7 @@ export default function UserProfileSection() {
  className={`py-2.5 px-3 rounded-xl text-xs font-semibold transition-all ${
  form.diabetesType === key
  ? 'bg-blue-100 bg-blue-900/40 text-blue-300 ring-1 ring-blue-300'
- : 'bg-gray-50 bg-gray-700 text-gray-400 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
+ : 'bg-gray-50 bg-gray-700 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
  }`}
  >
  {label}
@@ -404,7 +404,7 @@ export default function UserProfileSection() {
  </div>
 
  {/* Target Weight */}
- <div> <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <div> <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Target className="w-4 h-4"/>
  Peso deseado (kg) <span className="text-gray-400 text-gray-400 font-normal">- opcional</span>
  </label>
@@ -416,12 +416,12 @@ export default function UserProfileSection() {
  max={300}
  step={0.1}
  placeholder="¿Cuánto te gustaría pesar?"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
  {/* Medications */}
- <div> <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <div> <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Activity className="w-4 h-4"/>
  Medicamentos <span className="text-gray-400 text-gray-400 font-normal">- opcional</span>
  </label>
@@ -430,7 +430,7 @@ export default function UserProfileSection() {
  value={form.medications || ''}
  onChange={e => setForm(f => ({ ...f, medications: e.target.value }))}
  placeholder="Ej: Metformina 500mg, Insulina..."
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
@@ -462,7 +462,7 @@ export default function UserProfileSection() {
  {profile.name.charAt(0).toUpperCase()}
  </div>
  <div>
- <h2 className="text-xl font-bold text-gray-200 text-white">{profile.name}</h2>
+ <h2 className="text-xl font-bold text-white">{profile.name}</h2>
  <p className="text-sm text-gray-400 text-gray-500">
  {profile.age} años · {profile.weight} kg · {profile.height} cm · {genderLabels[profile.gender]}
  </p>
@@ -496,12 +496,12 @@ export default function UserProfileSection() {
  {/* Confirmación de cierre de sesión inline */}
  {showProfileLogoutConfirm && (
  <div className="absolute right-0 top-full mt-2 w-64 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 z-50 p-4 animate-[fadeIn_0.15s_ease-out]">
- <p className="text-sm font-semibold text-gray-200 text-white mb-1">¿Cerrar sesión?</p>
+ <p className="text-sm font-semibold text-white mb-1">¿Cerrar sesión?</p>
  <p className="text-xs text-gray-400 text-gray-400 mb-3">Tus datos locales se conservarán.</p>
  <div className="flex gap-2">
  <button
  onClick={() => setShowProfileLogoutConfirm(false)}
- className="flex-1 py-2 rounded-xl text-xs font-semibold bg-gray-700 text-gray-400 text-gray-300 hover:bg-gray-200 hover:bg-gray-600 transition-all"
+ className="flex-1 py-2 rounded-xl text-xs font-semibold bg-gray-700 text-gray-300 hover:bg-gray-200 hover:bg-gray-600 transition-all"
  >
  Cancelar
  </button>
@@ -614,7 +614,7 @@ export default function UserProfileSection() {
  <div className="flex items-start gap-3">
  <AlertTriangle className="w-6 h-6 mt-0.5 flex-shrink-0"/>
  <div>
- <h3 className="font-bold text-gray-200 text-white mb-1">
+ <h3 className="font-bold text-white mb-1">
  Nivel de Riesgo: {riskLevelLabels[assessment.riskLevel]}
  </h3>
  <p className="text-sm text-gray-400">
@@ -627,7 +627,7 @@ export default function UserProfileSection() {
  {/* Health Risks */}
  {assessment.healthRisks.length > 0 && (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Heart className="w-5 h-5 text-red-500"/>
  Evaluación de Riesgos
  </h3>
@@ -652,7 +652,7 @@ export default function UserProfileSection() {
  {riskLevelLabels[risk.risk]}
  </span>
  </div>
- <p className="text-sm text-gray-400 text-gray-300 mb-2">{risk.description}</p>
+ <p className="text-sm text-gray-300 mb-2">{risk.description}</p>
  <p className="text-sm font-medium text-gray-300">
  <span className="text-blue-600">💡 Recomendación:</span> {risk.recommendation}
  </p>
@@ -663,7 +663,7 @@ export default function UserProfileSection() {
  )}
 
  {/* Targets */} <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-4 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
  <Target className="w-5 h-5 text-green-500"/>
  Tus Metas de Salud
  </h3>
@@ -700,7 +700,7 @@ export default function UserProfileSection() {
  {/* Ideal weight progression */}
  {profile.targetWeight && profile.targetWeight < profile.weight && (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
- <h3 className="text-lg font-bold text-gray-200 text-white mb-3 flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
  <Flame className="w-5 h-5 text-orange-500"/>
  Progreso hacia tu meta
  </h3>
@@ -787,7 +787,7 @@ export default function UserProfileSection() {
  </div>
  )}
  <div className="mb-4">
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/> Contraseña
  </label>
  <input
@@ -795,7 +795,7 @@ export default function UserProfileSection() {
  value={deletePassword}
  onChange={e => setDeletePassword(e.target.value)}
  placeholder="Tu contraseña actual"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-red-400 focus:ring-2 focus:ring-red-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500 outline-none transition-all"
  disabled={deleting}
  onKeyDown={e => e.key === 'Enter' && handleDeleteAccount()}
  autoFocus

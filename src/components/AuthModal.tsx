@@ -26,18 +26,18 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  <div className="bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl"onClick={e => e.stopPropagation()}>
  <div className="flex items-center gap-3 mb-4">
  <AlertCircle className="w-6 h-6 text-yellow-500"/>
- <h2 className="text-lg font-bold text-gray-200 text-white">Firebase no configurado</h2>
+ <h2 className="text-lg font-bold text-white">Firebase no configurado</h2>
  </div>
  <p className="text-sm text-gray-400 mb-4">
  Para usar autenticación en la nube, configura Firebase:
  </p>
- <ol className="text-sm text-gray-400 text-gray-300 space-y-2 mb-4 list-decimal list-inside">
+ <ol className="text-sm text-gray-300 space-y-2 mb-4 list-decimal list-inside">
  <li>Crea un proyecto en <a href="https://console.firebase.google.com"className="text-blue-600 underline"target="_blank"rel="noopener">Firebase Console</a></li>
  <li>Agrega una App Web y copia la configuración</li>
  <li>Crea un archivo <code className="bg-gray-700 px-2 py-0.5 rounded text-xs">.env</code> en la raíz del proyecto</li>
  <li>Pega las variables del <code className="bg-gray-700 px-2 py-0.5 rounded text-xs">.env.example</code> con tus valores</li>
  </ol>
- <button onClick={onClose} className="w-full py-3 rounded-xl bg-gray-700 text-gray-400 text-gray-300 font-semibold hover:bg-gray-200 transition">
+ <button onClick={onClose} className="w-full py-3 rounded-xl bg-gray-700 text-gray-300 font-semibold hover:bg-gray-200 transition">
  Entendido
  </button>
  </div>
@@ -90,7 +90,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  {mode === 'login' ? <LogIn className="w-5 h-5 text-white"/> : <UserPlus className="w-5 h-5 text-white"/>}
  </div>
  <div>
- <h2 className="text-lg font-bold text-gray-200 text-white">
+ <h2 className="text-lg font-bold text-white">
  {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
  </h2>
  <p className="text-xs text-gray-400 text-gray-500">
@@ -122,7 +122,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  <form onSubmit={handleSubmit} className="space-y-4">
  {mode === 'register' && (
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <User className="w-4 h-4"/> Nombre
  </label>
  <input
@@ -130,14 +130,14 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  value={name}
  onChange={e => setName(e.target.value)}
  placeholder="Tu nombre"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>
  )}
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Mail className="w-4 h-4"/> Correo Electrónico
  </label>
  <input
@@ -145,13 +145,13 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  value={email}
  onChange={e => setEmail(e.target.value)}
  placeholder="tu@correo.com"
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>
 
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Lock className="w-4 h-4"/> Contraseña
  </label>
  <input
@@ -160,7 +160,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
  onChange={e => setPassword(e.target.value)}
  placeholder="Mínimo 6 caracteres"
  minLength={6}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  required
  />
  </div>

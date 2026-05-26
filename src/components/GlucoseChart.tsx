@@ -65,7 +65,7 @@ export default function GlucoseChart({ entries }: GlucoseChartProps) {
  return (
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
  <div className="flex items-center justify-between mb-6">
- <h3 className="text-lg font-bold text-gray-200 text-white flex items-center gap-2">
+ <h3 className="text-lg font-bold text-white flex items-center gap-2">
  <TrendingUp className="w-5 h-5 text-blue-500"/>
  Tendencia (7 días)
  </h3>

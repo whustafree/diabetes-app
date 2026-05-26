@@ -60,7 +60,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  return (
  <form onSubmit={handleSubmit} className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700 space-y-5">
  <div className="flex items-center justify-between">
- <h3 className="text-lg font-bold text-gray-200 text-white">Nueva Medición</h3>
+ <h3 className="text-lg font-bold text-white">Nueva Medición</h3>
  <button
  type="button"
  onClick={() => setShowForm(false)}
@@ -72,7 +72,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
 
  {/* Glucose Value */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5">
  Glucosa (mg/dL)
  </label>
  <div className="relative">
@@ -84,7 +84,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  min={20}
  max={600}
  required
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-lg font-medium"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-lg font-medium"
  autoFocus
  />
  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 text-gray-400 font-medium">
@@ -101,7 +101,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
  String(v) === value
  ? 'bg-blue-100 bg-blue-900/40 text-blue-300 ring-1 ring-blue-300'
- : 'bg-gray-700 text-gray-400 text-gray-300 hover:bg-gray-200 hover:bg-gray-600'
+ : 'bg-gray-700 text-gray-300 hover:bg-gray-200 hover:bg-gray-600'
  }`}
  >
  {v}
@@ -113,7 +113,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
 
  {/* Meal Type */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Apple className="w-4 h-4"/>
  Momento
  </label>
@@ -126,7 +126,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  className={`px-2 py-2 rounded-xl text-xs font-medium transition-all ${
  meal === key
  ? 'bg-blue-100 bg-blue-900/40 text-blue-300 ring-1 ring-blue-300'
- : 'bg-gray-50 bg-gray-700 text-gray-400 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
+ : 'bg-gray-50 bg-gray-700 text-gray-300 hover:bg-gray-700 hover:bg-gray-600 border border-gray-700 border-gray-600'
  }`}
  >
  {label}
@@ -137,7 +137,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
 
  {/* Insulin */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <Syringe className="w-4 h-4"/>
  Insulina (unidades)
  </label>
@@ -149,13 +149,13 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  min={0}
  max={100}
  step={0.5}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
  />
  </div>
 
  {/* Notes */}
  <div>
- <label className="block text-sm font-semibold text-gray-400 text-gray-300 mb-1.5 flex items-center gap-1.5">
+ <label className="block text-sm font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
  <StickyNote className="w-4 h-4"/>
  Notas
  </label>
@@ -164,7 +164,7 @@ export default function GlucoseForm({ onEntryAdded }: GlucoseFormProps) {
  onChange={(e) => setNotes(e.target.value)}
  placeholder="Opcional - Ej: Sentí mareos, comí mucho carbohidrato..."
  rows={2}
- className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
+ className="w-full px-4 py-3 rounded-xl border border-gray-700 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
  />
  </div>
 

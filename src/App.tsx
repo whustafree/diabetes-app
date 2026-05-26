@@ -208,7 +208,7 @@ export default function App() {
  <Activity className="w-5 h-5 text-white"/>
  </div>
  <div className="hidden sm:block">
- <h1 className="text-base font-extrabold text-gray-200 text-white leading-tight">Diabetes Control</h1>
+ <h1 className="text-base font-extrabold text-white leading-tight">Diabetes Control</h1>
  <p className="text-[10px] text-gray-400 text-gray-400 leading-tight">Salud y Bienestar</p>
  </div>
  </div>
@@ -270,7 +270,7 @@ export default function App() {
  >
  <BellRing className="w-5 h-5"/>
  {unreadCount > 0 && (
- <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-900/50 shadow-red-900/50 animate-pulse">
+ <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-900/50 animate-pulse">
  {unreadCount > 9 ? '9+' : unreadCount}
  </span>
  )}
@@ -282,7 +282,7 @@ export default function App() {
  <div className="fixed inset-0 z-40"onClick={() => setShowNotificationPanel(false)} />
  <div className="absolute right-0 top-full mt-2 w-80 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 z-50 overflow-hidden animate-[fadeIn_0.2s_ease-out]">
  <div className="p-3 border-b border-gray-700 flex items-center justify-between">
- <h4 className="text-sm font-bold text-gray-200 text-white">Notificaciones</h4>
+ <h4 className="text-sm font-bold text-white">Notificaciones</h4>
  {notificationsHistory.length > 0 && (
  <button onClick={markAllRead} className="text-[11px] text-blue-400 font-semibold hover:text-blue-600 transition">
  Marcar todas leídas
@@ -292,7 +292,7 @@ export default function App() {
  <div className="max-h-64 overflow-y-auto">
  {notificationsHistory.length === 0 ? (
  <div className="py-8 text-center">
- <BellRing className="w-8 h-8 text-gray-200 text-gray-400 mx-auto mb-2"/>
+ <BellRing className="w-8 h-8 text-gray-100 text-gray-400 mx-auto mb-2"/>
  <p className="text-xs text-gray-400 text-gray-500">Sin notificaciones</p>
  </div>
  ) : (
@@ -306,7 +306,7 @@ export default function App() {
  >
  <span className="text-lg mt-0.5 flex-shrink-0">{getNotifIcon(n.type)}</span>
  <div className="min-w-0 flex-1">
- <p className="text-xs font-semibold text-gray-200 text-white truncate">{n.title}</p>
+ <p className="text-xs font-semibold text-white truncate">{n.title}</p>
  {n.body && <p className="text-[11px] text-gray-400 truncate mt-0.5">{n.body}</p>}
  <p className="text-[10px] text-gray-300 text-gray-400 mt-0.5">
  {n.time.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
@@ -352,7 +352,7 @@ export default function App() {
  <div className="absolute right-0 top-full mt-2 w-56 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 z-[60] overflow-hidden animate-[fadeIn_0.15s_ease-out]">
  {/* User info header */}
  <div className="p-4 border-b border-gray-700">
- <p className="text-sm font-bold text-gray-200 text-white truncate">
+ <p className="text-sm font-bold text-white truncate">
  {user.displayName || 'Usuario'}
  </p>
  <p className="text-xs text-gray-400 text-gray-400 truncate mt-0.5">
@@ -364,7 +364,7 @@ export default function App() {
  {/* Ver perfil */}
  <button
  onClick={() => { setSection('profile'); setShowUserMenu(false); }}
- className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 text-gray-300 hover:bg-gray-700/50 transition-all"
+ className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-all"
  >
  <User className="w-4 h-4 text-gray-400"/>
  Mi Perfil
@@ -373,7 +373,7 @@ export default function App() {
  {/* Configuración de cuenta */}
  <button
  onClick={() => { setSection('settings'); setShowUserMenu(false); }}
- className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 text-gray-300 hover:bg-gray-700/50 transition-all"
+ className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-all"
  >
  <Settings className="w-4 h-4 text-gray-400"/>
  Configuración de cuenta
@@ -407,7 +407,7 @@ export default function App() {
  onClick={() => setSection(item.id)}
  className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
  isActive
- ? 'bg-gray-700 text-gray-200 text-white shadow-sm'
+ ? 'bg-gray-700 text-white shadow-sm'
  : 'text-gray-400 hover:text-gray-400 hover:text-gray-200'
  }`}
  >
@@ -588,7 +588,7 @@ function ToastNotification({ id, title, body, type, onDismiss }: {
  </div>
 
  <div className="flex-1 min-w-0">
- <p className="text-sm font-bold text-gray-200 text-white">{title}</p>
+ <p className="text-sm font-bold text-white">{title}</p>
  {body && (
  <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{body}</p>
  )}
@@ -645,7 +645,7 @@ function PWAInstallPrompt() {
  <Activity className="w-5 h-5 text-white"/>
  </div>
  <div className="flex-1 min-w-0">
- <p className="text-sm font-bold text-gray-200 text-white">Instala Diabetes Control</p>
+ <p className="text-sm font-bold text-white">Instala Diabetes Control</p>
  <p className="text-xs text-gray-400 mt-0.5">Agrega la app a tu pantalla de inicio</p>
  </div>
  <button

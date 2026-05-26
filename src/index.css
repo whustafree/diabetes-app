@@ -3,185 +3,272 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+ :root {
+ --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+ --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+ --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+ --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+ --color-bg-primary: #0f172a;
+ --color-bg-secondary: #1e293b;
+ --color-bg-card: #1e293b;
+ --color-bg-elevated: #334155;
+ --color-text-primary: #f1f5f9;
+ --color-text-secondary: #94a3b8;
+ --color-border: #334155;
+ --color-accent: #3b82f6;
+ --color-accent-hover: #60a5fa;
+ }
 
-  body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: #0f172a;
-  }
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ }
 
-  .dark {
-    color-scheme: dark;
-  }
+ body {
+ font-family: 'Inter', system-ui, -apple-system, sans-serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ background: var(--color-bg-primary);
+ color: var(--color-text-primary);
+ }
 
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+ ::selection {
+ background: rgba(59, 130, 246, 0.3);
+ color: #fff;
+ }
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+ .dark, :root {
+ color-scheme: dark;
+ }
 
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+ /* ─── FOCUS VISIBLE ─── */
+ *:focus-visible {
+ outline: 2px solid var(--color-accent);
+ outline-offset: 2px;
+ border-radius: 4px;
+ }
 
-  @keyframes scaleIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
+ /* ─── ANIMATIONS ─── */
+ @keyframes fadeIn {
+ from { opacity: 0; }
+ to { opacity: 1; }
+ }
 
-  @keyframes bounceIn {
-    0% { transform: scale(0); opacity: 0; }
-    50% { transform: scale(1.15); }
-    70% { transform: scale(0.95); }
-    100% { transform: scale(1); opacity: 1; }
-  }
+ @keyframes fadeInUp {
+ from { opacity: 0; transform: translateY(16px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
 
-  @keyframes slideInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+ @keyframes fadeInDown {
+ from { opacity: 0; transform: translateY(-10px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
 
-  @keyframes slideOutRight {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(100px); }
-  }
+ @keyframes scaleIn {
+ from { transform: scale(0.8); opacity: 0; }
+ to { transform: scale(1); opacity: 1; }
+ }
 
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-    50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
-  }
+ @keyframes bounceIn {
+ 0% { transform: scale(0); opacity: 0; }
+ 50% { transform: scale(1.15); }
+ 70% { transform: scale(0.95); }
+ 100% { transform: scale(1); opacity: 1; }
+ }
 
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
+ @keyframes slideInUp {
+ from { opacity: 0; transform: translateY(20px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
 
-  @keyframes countUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+ @keyframes slideOutRight {
+ from { opacity: 1; transform: translateX(0); }
+ to { opacity: 0; transform: translateX(100px); }
+ }
 
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.15); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.08); }
-    60% { transform: scale(1); }
-  }
+ @keyframes pulseGlow {
+ 0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+ 50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+ }
 
-  .fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
+ @keyframes shimmer {
+ 0% { background-position: -200% 0; }
+ 100% { background-position: 200% 0; }
+ }
 
-  .fade-in-up {
-    animation: fadeInUp 0.4s ease-out;
-  }
+ @keyframes spinSlow {
+ from { transform: rotate(0deg); }
+ to { transform: rotate(360deg); }
+ }
 
-  .fade-in-down {
-    animation: fadeInDown 0.3s ease-out;
-  }
+ @keyframes skeletonPulse {
+ 0%, 100% { opacity: 0.4; }
+ 50% { opacity: 0.7; }
+ }
 
-  .scale-in {
-    animation: scaleIn 0.3s ease-out;
-  }
+ @keyframes countUp {
+ from { opacity: 0; transform: translateY(8px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
 
-  .bounce-in {
-    animation: bounceIn 0.5s ease-out;
-  }
+ @keyframes heartbeat {
+ 0%, 100% { transform: scale(1); }
+ 15% { transform: scale(1.15); }
+ 30% { transform: scale(1); }
+ 45% { transform: scale(1.08); }
+ 60% { transform: scale(1); }
+ }
 
-  .slide-in-up {
-    animation: slideInUp 0.3s ease-out;
-  }
+ .fade-in {
+ animation: fadeIn 0.3s ease-out;
+ }
 
-  .pulse-glow {
-    animation: pulseGlow 2s infinite;
-  }
+ .fade-in-up {
+ animation: fadeInUp 0.4s ease-out;
+ }
 
-  .heartbeat {
-    animation: heartbeat 1.5s ease-in-out infinite;
-  }
+ .fade-in-down {
+ animation: fadeInDown 0.3s ease-out;
+ }
 
-  .shimmer {
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-  }
+ .scale-in {
+ animation: scaleIn 0.3s ease-out;
+ }
 
-  /* Staggered card entrance */
-  .card-enter {
-    animation: fadeInUp 0.5s ease-out both;
-  }
+ .bounce-in {
+ animation: bounceIn 0.5s ease-out;
+ }
 
-  .card-enter:nth-child(1) { animation-delay: 0.05s; }
-  .card-enter:nth-child(2) { animation-delay: 0.1s; }
-  .card-enter:nth-child(3) { animation-delay: 0.15s; }
-  .card-enter:nth-child(4) { animation-delay: 0.2s; }
-  .card-enter:nth-child(5) { animation-delay: 0.25s; }
-  .card-enter:nth-child(6) { animation-delay: 0.3s; }
-  .card-enter:nth-child(7) { animation-delay: 0.35s; }
-  .card-enter:nth-child(8) { animation-delay: 0.4s; }
+ .slide-in-up {
+ animation: slideInUp 0.3s ease-out;
+ }
 
-  /* Card hover effect */
-  .card-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+ .pulse-glow {
+ animation: pulseGlow 2s infinite;
+ }
 
-  .card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
+ .heartbeat {
+ animation: heartbeat 1.5s ease-in-out infinite;
+ }
 
-  /* Number count animation */
-  .count-up {
-    animation: countUp 0.6s ease-out;
-  }
+ .shimmer {
+ background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+ background-size: 200% 100%;
+ animation: shimmer 2s infinite;
+ }
+
+ .skeleton {
+ background: var(--color-bg-elevated);
+ border-radius: 8px;
+ animation: skeletonPulse 1.5s ease-in-out infinite;
+ }
+
+ .spin-slow {
+ animation: spinSlow 3s linear infinite;
+ }
+
+ /* Staggered card entrance */
+ .card-enter {
+ animation: fadeInUp 0.5s ease-out both;
+ }
+
+ .card-enter:nth-child(1) { animation-delay: 0.05s; }
+ .card-enter:nth-child(2) { animation-delay: 0.1s; }
+ .card-enter:nth-child(3) { animation-delay: 0.15s; }
+ .card-enter:nth-child(4) { animation-delay: 0.2s; }
+ .card-enter:nth-child(5) { animation-delay: 0.25s; }
+ .card-enter:nth-child(6) { animation-delay: 0.3s; }
+ .card-enter:nth-child(7) { animation-delay: 0.35s; }
+ .card-enter:nth-child(8) { animation-delay: 0.4s; }
+
+ /* Card hover effect */
+ .card-hover {
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ }
+
+ .card-hover:hover {
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
+ }
+
+ .card-hover:active {
+ transform: translateY(0);
+ }
+
+ /* Button press effect */
+ .btn-press {
+ transition: transform 0.15s ease;
+ }
+
+ .btn-press:active {
+ transform: scale(0.97);
+ }
+
+ /* Glow effect for primary elements */
+ .glow-blue {
+ box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+ }
+
+ .glow-emerald {
+ box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+ }
+
+ /* Number count animation */
+ .count-up {
+ animation: countUp 0.6s ease-out;
+ }
 }
 
-/* Custom scrollbar */
+/* ─── CUSTOM SCROLLBAR ─── */
 ::-webkit-scrollbar {
-  width: 6px;
+ width: 8px;
+ height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+ background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #4b5563;
+ background: #475569;
+ border-radius: 4px;
+ border: 2px solid transparent;
+ background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+ background: #64748b;
+ border: 2px solid transparent;
+ background-clip: content-box;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+/* Firefox scrollbar */
+* {
+ scrollbar-width: thin;
+ scrollbar-color: #475569 transparent;
+}
+
+/* Smooth page transitions */
+.page-enter {
+ animation: fadeInUp 0.4s ease-out;
+}
+
+/* Loading skeleton placeholder */
+.skeleton-block {
+ background: linear-gradient(90deg, var(--color-bg-elevated) 25%, var(--color-bg-secondary) 50%, var(--color-bg-elevated) 75%);
+ background-size: 200% 100%;
+ animation: shimmer 1.5s infinite;
+ border-radius: 8px;
 }
 
 /* Remove number input arrows */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+ -webkit-appearance: none;
+ margin: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+ -moz-appearance: textfield;
 }

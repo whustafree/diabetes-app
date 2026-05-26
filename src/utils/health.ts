@@ -163,10 +163,10 @@ export const riskLevelLabels: Record<HealthRiskLevel, string> = {
 };
 
 export const riskLevelColors: Record<HealthRiskLevel, string> = {
-  bajo: 'text-green-400 bg-green-900/30 border-green-200',
-  moderado: 'text-yellow-600 bg-yellow-900/30 border-yellow-800',
-  alto: 'text-orange-400 bg-orange-900/30 border-orange-200',
-  muy_alto: 'text-red-600 bg-red-900/30 border-red-800',
+  bajo: 'text-green-400 bg-green-900/30 border-green-800',
+  moderado: 'text-yellow-400 bg-yellow-900/30 border-yellow-800',
+  alto: 'text-orange-400 bg-orange-900/30 border-orange-800',
+  muy_alto: 'text-red-400 bg-red-900/30 border-red-800',
 };
 
 function assessRisks(profile: UserProfile, bmi: number, bodyFat: number): HealthRisk[] {

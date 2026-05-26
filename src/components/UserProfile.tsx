@@ -577,25 +577,22 @@ export default function UserProfileSection() {
  {
  label: 'Grasa Corporal',
  value: `${assessment.bodyFatPercentage}%`,
- sub: assessment.bodyFatCategory,
- color: 'text-purple-600',
- bg: 'bg-purple-50',
+ sub: assessment.bodyFatCategory,    color: 'text-purple-400',
+    bg: 'bg-purple-900/30',
  icon: '🔬',
  },
  {
  label: 'Tasa Metabólica',
  value: `${assessment.bmr} kcal`,
- sub: 'BMR (basal)',
- color: 'text-orange-600',
- bg: 'bg-orange-50',
+ sub: 'BMR (basal)',    color: 'text-orange-400',
+    bg: 'bg-orange-900/30',
  icon: '🔥',
  },
  {
  label: 'Gasto Calórico',
  value: `${assessment.tdee} kcal`,
- sub: 'TDEE (total)',
- color: 'text-emerald-600',
- bg: 'bg-emerald-50',
+ sub: 'TDEE (total)',    color: 'text-emerald-400',
+    bg: 'bg-emerald-900/30',
  icon: '⚡',
  }, ].map(card => (
  <div key={card.label} className="bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-700 hover:shadow-md transition-all">
@@ -634,20 +631,17 @@ export default function UserProfileSection() {
  <div className="space-y-3">
  {assessment.healthRisks.map((risk, i) => (
  <div key={i} className={`p-4 rounded-xl border ${
- risk.risk === 'alto' || risk.risk === 'muy_alto'
- ? 'bg-red-50 border-red-200'
- : 'bg-yellow-50 border-yellow-200'
+ risk.risk === 'alto' || risk.risk === 'muy_alto'          ? 'bg-red-900/30 border-red-800'
+          : 'bg-yellow-900/30 border-yellow-800'
  }`}>
  <div className="flex items-center gap-2 mb-1">
- <span className={`font-bold text-sm ${
- risk.risk === 'alto' || risk.risk === 'muy_alto' ? 'text-red-700' : 'text-yellow-700'
+ <span className={`font-bold text-sm ${          risk.risk === 'alto' || risk.risk === 'muy_alto' ? 'text-red-300' : 'text-yellow-300'
  }`}>
  {risk.condition}
  </span>
- <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
- risk.risk === 'alto' || risk.risk === 'muy_alto'
- ? 'bg-red-200 text-red-800'
- : 'bg-yellow-200 text-yellow-800'
+ <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${          risk.risk === 'alto' || risk.risk === 'muy_alto'
+          ? 'bg-red-900/50 text-red-300'
+          : 'bg-yellow-900/50 text-yellow-300'
  }`}>
  {riskLevelLabels[risk.risk]}
  </span>
@@ -667,10 +661,8 @@ export default function UserProfileSection() {
  <Target className="w-5 h-5 text-green-500"/>
  Tus Metas de Salud
  </h3>
- <div className="grid sm:grid-cols-2 gap-4">
- <div className="p-4 rounded-xl bg-blue-900/20 border border-blue-100">
- <div className="text-sm font-semibold text-blue-300 mb-1">Peso ideal</div>
- <div className="text-lg font-bold text-blue-800">
+ <div className="grid sm:grid-cols-2 gap-4">  <div className="p-4 rounded-xl bg-blue-900/30 border border-blue-800">
+ <div className="text-sm font-semibold text-blue-300 mb-1">Peso ideal</div>  <div className="text-lg font-bold text-blue-200">
  {assessment.idealWeightRange.min} - {assessment.idealWeightRange.max} kg
  </div>
  <div className="text-xs text-blue-400 mt-1">
@@ -680,10 +672,8 @@ export default function UserProfileSection() {
  ? `Debes ganar ${Math.round(assessment.idealWeightRange.min - profile.weight)} kg`
  : '¡Estás en tu rango de peso ideal!'}
  </div>
- </div>
- <div className="p-4 rounded-xl bg-purple-900/20 border border-purple-100">
- <div className="text-sm font-semibold text-purple-300 mb-1">% Grasa saludable</div>
- <div className="text-lg font-bold text-purple-800">
+ </div>  <div className="p-4 rounded-xl bg-purple-900/30 border border-purple-800">
+ <div className="text-sm font-semibold text-purple-300 mb-1">% Grasa saludable</div>  <div className="text-lg font-bold text-purple-200">
  {assessment.healthyBodyFatRange.min}% - {assessment.healthyBodyFatRange.max}%
  </div>
  <div className="text-xs text-purple-400 mt-1">

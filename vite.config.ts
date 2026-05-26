@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['vite.svg', 'favicon.ico'],
+      includeAssets: ['vite.svg', 'favicon.ico', 'icon-192x192.png', 'icon-512x512.png'],
       manifest: {
         name: 'Diabetes Control - App de Monitoreo',
         short_name: 'DiabetesCtrl',
@@ -24,16 +24,22 @@ export default defineConfig({
         prefer_related_applications: false,
         icons: [
           {
-            src: '/vite.svg',
+            src: '/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/svg+xml',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
+            src: '/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
             purpose: 'any maskable',
           },
           {
             src: '/vite.svg',
-            sizes: '512x512',
+            sizes: '192x192',
             type: 'image/svg+xml',
-            purpose: 'any maskable',
+            purpose: 'any',
           },
         ],
       },

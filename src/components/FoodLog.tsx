@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { UtensilsCrossed, Plus, X, Search, Trash2, Apple, Beef, Wheat, Droplets, Timer, TrendingUp, ChevronDown, ChevronUp, Inbox } from 'lucide-react';
+import PullToRefresh from './PullToRefresh';
 import EmptyState from './EmptyState';
 import type { FoodLogEntry, FoodLogMealType } from '../types';
 import { foodLogMealLabels, foodLogMealIcons } from '../types';
@@ -35,9 +36,13 @@ export default function FoodLog() {
  const handleDelete = (id: string) => {
  const updated = deleteFoodEntry(id);
  setEntries(updated);
- };
+ };  const handleRefresh = useCallback(() => {
+    const updated = loadFoodLog();
+    setEntries(updated);
+  }, []);
 
- return (
+  return (
+ <PullToRefresh onRefresh={handleRefresh}>
  <div className="max-w-4xl mx-auto space-y-6">
  {/* Header */}
  <div className="flex items-center justify-between">
@@ -115,16 +120,16 @@ export default function FoodLog() {
  onClick: () => setShowForm(true),
  icon: Plus,
  } : undefined}
- />
- ) : (
- <div className="space-y-3">
- {filtered.map(entry => (
- <FoodLogCard key={entry.id} entry={entry} onDelete={handleDelete} />
- ))}
- </div>
- )}
- </div>
- );
+ />  ) : (
+     <div className="space-y-3">
+      {filtered.map(entry => (
+       <FoodLogCard key={entry.id} entry={entry} onDelete={handleDelete} />
+      ))}
+     </div>
+    )}
+    </div>
+    </PullToRefresh>
+   );
 }
 
 // ─── Food Form ───

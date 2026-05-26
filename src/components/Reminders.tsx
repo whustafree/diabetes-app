@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Bell, BellOff, Clock, PlusCircle, Trash2, Save, CalendarDays, Activity, Cloud, CloudOff, RefreshCw, Smartphone, CheckCircle2 } from 'lucide-react';
+import PullToRefresh from './PullToRefresh';
 import type { Reminder, ReminderType } from '../types';
 import { reminderTypeLabels, reminderTypeIcons } from '../types';
 import { generateId } from '../utils/helpers';
@@ -143,10 +144,26 @@ export default function Reminders() {
  });
  }
  }
- }, []);
+ }, []);  // Handle pull-to-refresh
+  const handleCloudRefresh = useCallback(async () => {
+    if (!user || !firebaseReady) return;
+    setCloudStatus('syncing');
+    try {
+      const cloudData = await loadRemindersFromCloud(user.uid);
+      if (cloudData && cloudData.items.length > 0) {
+        setReminders(cloudData.items);
+        localStorage.setItem('diabetes-app-reminders', JSON.stringify(cloudData.items));
+        setCloudStatus('synced');
+      } else {
+        setCloudStatus('synced');
+      }
+    } catch {
+      setCloudStatus('offline');
+    }
+  }, [user, firebaseReady]);
 
- // Cloud sync: carga inicial desde Firebase
- useEffect(() => {
+  // Cloud sync: carga inicial desde Firebase
+  useEffect(() => {
  if (!user || !firebaseReady) {
  cloudInitDone.current = true;
  setCloudStatus('offline');
@@ -328,9 +345,8 @@ export default function Reminders() {
  setPushEnabled(false);
  setPushError('');
  localStorage.setItem('fcm-push-enabled', 'false');
- };
-
- return (
+ };  return (
+ <PullToRefresh onRefresh={handleCloudRefresh}>
  <div className="max-w-4xl mx-auto space-y-6">
  {/* Header */}
  <div className="text-center">
@@ -531,8 +547,7 @@ export default function Reminders() {
  )}
 
  {/* Reminder List */}
- <div className="space-y-3">
- {reminders.length === 0 ? (
+ <div className="space-y-3">      {reminders.length === 0 ? (
  <div className="text-center py-10">
  <Bell className="w-12 h-12 text-gray-300 text-gray-400 mx-auto mb-3"/>
  <p className="text-gray-400 text-gray-400 font-medium">No hay recordatorios</p>
@@ -541,7 +556,7 @@ export default function Reminders() {
  reminders.map(reminder => (
  <div
  key={reminder.id}
- className={`rounded-2xl p-4 border transition-all ${typeColors[reminder.type]} ${
+ className={`stagger-enter rounded-2xl p-4 border transition-all ${typeColors[reminder.type]} ${
  reminder.enabled ? 'opacity-100' : 'opacity-50'
  }`}
  >
@@ -614,5 +629,6 @@ export default function Reminders() {
  </div>
  </div>
  </div>
+ </PullToRefresh>
  );
 }

@@ -133,6 +133,15 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     return `${m}:${sec.toString().padStart(2, '0')}`;
   };
 
+  // ─── Vibration API for critical glucose ───
+  useEffect(() => {
+    if (liveGlucose !== null && (liveGlucose < 55 || liveGlucose > 250)) {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([300, 150, 300, 150, 300]);
+      }
+    }
+  }, [liveGlucose]);
+
   const liveStatus = liveGlucose !== null ? getGlucoseStatus(liveGlucose) : null;
 
   // ─── Pull-to-refresh handler ───

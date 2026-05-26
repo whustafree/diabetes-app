@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Pill, PlusCircle, Trash2, Save, Clock, Bell, BellOff, Activity, Timer, AlertTriangle, ChevronDown, ChevronUp, Cloud, CloudOff, RefreshCw } from 'lucide-react';
+import PullToRefresh from './PullToRefresh';
 import type { Medication } from '../types';
 import { getNextDoseTime, formatDoseTime, getTimeUntilNextDose } from '../types';
 import { generateId } from '../utils/helpers';
@@ -278,6 +279,22 @@ export default function Medications() {
  setNotificationGranted('Notification' in window && Notification.permission === 'granted');
  };
 
+ // Handle pull-to-refresh
+ const handleCloudRefresh = useCallback(async () => {
+    if (!user || !firebaseReady) return;
+    setCloudStatus('syncing');
+    try {
+      const cloudData = await loadMedicationsFromCloud(user.uid);
+      const local = loadMedications();
+      const { medications: merged } = mergeMedications(local, cloudData);
+      setMedications(merged);
+      saveMedications(merged);
+      setCloudStatus('online');
+    } catch {
+      setCloudStatus('offline');
+    }
+  }, [user, firebaseReady]);
+
  // Calculate next dose info for each medication
  const medWithDoseInfo = useMemo(() => {
  return medications.map(med => {
@@ -300,6 +317,7 @@ export default function Medications() {
  const dueCount = medWithDoseInfo.filter(m => m.isDue).length;
 
  return (
+ <PullToRefresh onRefresh={handleCloudRefresh}>
  <div className="max-w-4xl mx-auto space-y-6">
  {/* Header */}
  <div className="text-center">
@@ -526,8 +544,8 @@ export default function Medications() {
  )}
 
  {/* Medication List */}
- <div className="space-y-3">
- {medications.length === 0 ? (
+     <div className="space-y-3">
+      {medications.length === 0 ? (
  <div className="text-center py-12">
  <Pill className="w-14 h-14 text-gray-300 text-gray-400 mx-auto mb-3"/>
  <p className="text-gray-400 text-gray-400 font-medium">No hay medicamentos registrados</p>
@@ -538,10 +556,8 @@ export default function Medications() {
  const info = medWithDoseInfo[index];
  const isExpanded = expandedId === med.id;
 
- return (
- <div
- key={med.id}
- className={`rounded-2xl border transition-all duration-200 ${
+ return (          <div key={med.id}
+            className={`stagger-enter rounded-2xl border transition-all duration-200 ${
  med.enabled
  ? info?.isDue
  ? 'bg-red-900/20 border-red-700 border-red-800 animate-[pulse_2s_ease-in-out_infinite]'
@@ -720,5 +736,6 @@ export default function Medications() {
  </div>
  </div>
  </div>
+ </PullToRefresh>
  );
 }

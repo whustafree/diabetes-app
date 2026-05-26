@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { User, Ruler, Weight, Cake, Activity, Heart, AlertTriangle, Target, Flame, Droplets, ChevronDown, ChevronUp, Save, Edit3, Cloud, CloudOff, RefreshCw, Trash2, AlertCircle, Lock, LogOut, DownloadCloud, UploadCloud } from 'lucide-react';
+import PullToRefresh from './PullToRefresh';
 import SkeletonLoader from './SkeletonLoader';
 import ConfirmModal from './ConfirmModal';
 import type { UserProfile, HealthAssessment, Gender, ActivityLevel, DiabetesType } from '../types';
@@ -442,13 +443,12 @@ export default function UserProfileSection() {
  </div>
  </div>
  );
- }
+ } // ─── VISTA DEL PERFIL ───
 
- // ─── VISTA DEL PERFIL ───
+  if (!profile || !assessment) return null;
 
- if (!profile || !assessment) return null;
-
- return (
+  return (
+ <PullToRefresh onRefresh={syncProfileFromCloud}>
  <div className="max-w-4xl mx-auto space-y-6">
  {/* Profile Header */}
  <div className="bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-700">
@@ -795,5 +795,6 @@ export default function UserProfileSection() {
  </div>
  )}
  </div>
+ </PullToRefresh>
  );
 }

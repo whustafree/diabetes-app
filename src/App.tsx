@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { Activity, User, Salad, Scale, Bell, Pill, Moon, Sun, Cloud, CloudOff, RefreshCw, LogOut, X, Loader2, BellRing, BellPlus, ChevronDown, Settings, Utensils } from 'lucide-react';
-import { useTheme } from './contexts/ThemeContext';
+import { Activity, User, Salad, Scale, Bell, Pill, Cloud, CloudOff, RefreshCw, LogOut, X, Loader2, BellRing, BellPlus, ChevronDown, Settings, Utensils } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
-import { saveThemeToCloud, loadThemeFromCloud } from './utils/themeSync';
 import { saveProfile } from './utils/health';
 import { loadProfileFromCloud } from './utils/profileSync';
 import LoginPage from './components/LoginPage';
@@ -44,22 +42,8 @@ export default function App() {
   const [profileSyncKey, setProfileSyncKey] = useState(0);
   const [profileSyncStatus, setProfileSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline'>('idle');
   const userMenuRef = useRef<HTMLDivElement>(null);
-  const { theme, isDark, cycleTheme, setTheme, themeMeta } = useTheme();
   const { user, loading, firebaseReady, logout } = useAuth();
   const { isOnline, pendingCount } = useNetworkStatus();
-
-  // ─── SYNC TEMA CON FIRESTORE ───
-  useEffect(() => {
-    if (!user || !firebaseReady) return;
-
-    // Cargar tema desde Firestore al iniciar sesión
-    loadThemeFromCloud(user.uid).then(cloudTheme => {
-      if (cloudTheme && cloudTheme !== (isDark ? 'dark' : 'light')) {
-        setTheme(cloudTheme);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.uid, firebaseReady]);
 
   // ─── SYNC PERFIL CON FIRESTORE ───
   useEffect(() => {
@@ -92,15 +76,6 @@ export default function App() {
       if (retryTimer.current) clearTimeout(retryTimer.current);
     };
   }, [user?.uid, firebaseReady]);
-
-  // Guardar tema en Firestore cuando cambie
-  useEffect(() => {
-    if (!user || !firebaseReady) return;
-    const timer = setTimeout(() => {
-      saveThemeToCloud(user.uid, isDark ? 'dark' : 'light');
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [isDark, user?.uid, firebaseReady]);
 
   // ─── NOTIFICACIONES PUSH ───
   const [notification, setNotification] = useState<{
@@ -345,22 +320,6 @@ export default function App() {
                   </>
                 )}
               </div>
-
-              {/* Theme cycle button */}
-              <button
-                onClick={cycleTheme}
-                className="p-2 rounded-xl text-gray-400 hover:text-yellow-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all group relative"
-                title={`${themeMeta.label}: ${themeMeta.description}. Click para cambiar.`}
-              >
-                {theme === 'light' && <Sun className="w-5 h-5" />}
-                {theme === 'dark' && <Moon className="w-5 h-5" />}
-                {theme === 'sepia' && <span className="text-lg leading-none block w-5 h-5">🟫</span>}
-                {theme === 'high-contrast' && <span className="text-lg leading-none block w-5 h-5">🔲</span>}
-                {/* Tooltip */}
-                <div className="absolute top-full mt-2 right-0 bg-gray-900 dark:bg-gray-700 text-white text-[10px] px-3 py-1.5 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-lg">
-                  {themeMeta.description}
-                </div>
-              </button>
 
               {/* Auth — Menú de usuario dropdown */}
               {firebaseReady && user && (

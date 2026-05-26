@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { Activity, Mail, Lock, User, LogIn, UserPlus, AlertCircle, CheckCircle, ArrowLeft, Eye, EyeOff, Moon, Sun, Chrome } from 'lucide-react';
+import { Activity, Mail, Lock, User, LogIn, UserPlus, AlertCircle, CheckCircle, ArrowLeft, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
 
 type AuthMode = 'login' | 'register' | 'reset';
 
 export default function LoginPage() {
   const { login, register, resetPassword, firebaseReady } = useAuth();
-  const { isDark, toggleTheme } = useTheme();
 
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
@@ -88,13 +86,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-base font-extrabold text-gray-800 dark:text-white">Diabetes Control</h1>
         </div>
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-xl text-gray-400 hover:text-yellow-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-          title={isDark ? 'Modo claro' : 'Modo oscuro'}
-        >
-          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
+
       </div>
 
       {/* ─── MAIN CONTENT ─── */}
